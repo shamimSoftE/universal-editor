@@ -14,7 +14,7 @@ An enterprise-grade, secure, and full-featured backend integration package for *
 - 🗄️ **Document & Version Management**: Built-in models and migrations for document history, drafts, and version rollback.
 - 💬 **Collaborative Comments & Document Locking**: Support for user comments and editing locks to prevent overwrite conflicts.
 - 🤖 **AI Assistant Backend Integration**: Dedicated controllers and endpoints for AI-assisted writing tools.
-- 🚀 **Auto-Discovery**: Compatible with Laravel 10 and Laravel 11.
+- 🚀 **Auto-Discovery**: Compatible with Laravel 10, 11, 12, and 13 (PHP 8.1 - 8.4+).
 
 ---
 
