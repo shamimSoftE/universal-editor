@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Rich Text Editor — Documentation Hub</title>
+  <meta name="description" content="Universal Rich Text Editor - Production-grade, secure, multi-platform WYSIWYG editor documentation for Vanilla JS, Vue 3, Vue 2, and Laravel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Live Universal Editor CDN for Interactive Sandbox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js"></script>
+
+  <style>
+    :root {
+      --font-main: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-code: 'Fira Code', monospace;
+
+      /* Light Theme Tokens */
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-sidebar: #ffffff;
+      --bg-code: #0f172a;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #e0e7ff;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      
+      --header-height: 68px;
+      --sidebar-width: 290px;
+      --toc-width: 230px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08);
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme Tokens (Deep Obsidian / Slate) */
+      --bg-base: #090d16;
+      --bg-surface: #0f172a;
+      --bg-surface-elevated: #1e293b;
+      --bg-sidebar: #0b1120;
+      --bg-code: #030712;
+      --border-subtle: #1e293b;
+      --border-strong: #334155;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --primary: #6366f1;
+      --primary-hover: #818cf8;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 30px rgba(0,0,0,0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 24px);
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.65;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-subtle);
+    }
+
+    /* ---------------- HEADER ---------------- */
+    header.doc-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    [data-theme="light"] header.doc-header {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .menu-toggle-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-strong);
+      color: var(--text-main);
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 12px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .header-search {
+      position: relative;
+      width: 320px;
+      margin: 0 20px;
+    }
+
+    .header-search input {
+      width: 100%;
+      padding: 9px 14px 9px 38px;
+      border-radius: 20px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .header-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      font-size: 0.85rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 1.1rem;
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+      transform: rotate(15deg);
+    }
+
+    .header-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .header-link-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .header-link-btn.btn-github {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    .header-link-btn.btn-github:hover {
+      background: var(--primary-hover);
+      color: #ffffff;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    /* ---------------- LAYOUT CONTAINER ---------------- */
+    .doc-layout {
+      display: flex;
+      margin-top: var(--header-height);
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    /* ---------------- LEFT SIDEBAR ---------------- */
+    aside.doc-sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: var(--header-height);
+      bottom: 0;
+      left: 0;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-subtle);
+      overflow-y: auto;
+      padding: 24px 16px;
+      z-index: 80;
+      transition: transform 0.3s ease, background-color 0.25s ease;
+    }
+
+    .sidebar-group {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-group-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.89rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .sidebar-link:hover {
+      color: var(--text-main);
+      background: var(--bg-surface-elevated);
+      transform: translateX(2px);
+    }
+
+    .sidebar-link.active {
+      color: var(--primary);
+      background: var(--primary-light);
+      font-weight: 700;
+      border-left: 3px solid var(--primary);
+    }
+
+    .sidebar-link .badge-tag {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-subtle);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* ---------------- MAIN CONTENT ---------------- */
+    main.doc-main {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      margin-right: var(--toc-width);
+      padding: 40px 48px;
+      max-width: 980px;
+    }
+
+    /* ---------------- RIGHT TOC ---------------- */
+    aside.doc-toc {
+      width: var(--toc-width);
+      position: fixed;
+      top: calc(var(--header-height) + 32px);
+      right: 20px;
+      max-height: calc(100vh - var(--header-height) - 50px);
+      overflow-y: auto;
+      padding: 12px 16px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .toc-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 5px 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      line-height: 1.4;
+      transition: color 0.15s ease;
+    }
+    .toc-link:hover, .toc-link.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ---------------- TYPOGRAPHY & SECTIONS ---------------- */
+    .doc-section {
+      margin-bottom: 60px;
+      padding-top: 10px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(6, 182, 212, 0.08));
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--text-main) 60%, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    h2.section-heading {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h3.sub-heading {
+      font-size: 1.22rem;
+      font-weight: 700;
+      margin: 28px 0 12px 0;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p.lead-text {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* ---------------- CARDS & GRIDS ---------------- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .feature-card .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .feature-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ---------------- TABS SYSTEM ---------------- */
+    .tab-container {
+      margin: 24px 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-header {
+      display: flex;
+      background: var(--bg-surface-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 8px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 12px 18px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: var(--bg-surface);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 24px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ---------------- CODE BLOCKS ---------------- */
+    .code-box {
+      position: relative;
+      margin: 16px 0;
+      border-radius: var(--radius-md);
+      background: var(--bg-code);
+      border: 1px solid var(--border-strong);
+      overflow: hidden;
+    }
+
+    .code-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      font-family: var(--font-code);
+      color: #94a3b8;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .copy-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .copy-btn.copied {
+      background: var(--accent-emerald);
+      color: #ffffff;
+    }
+
+    pre.code-block {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-code);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    /* ---------------- CALLOUT ALERTS ---------------- */
+    .callout {
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border-left: 4px solid;
+    }
+    .callout-info {
+      background: rgba(79, 70, 229, 0.08);
+      border-left-color: var(--primary);
+    }
+    .callout-success {
+      background: rgba(16, 185, 129, 0.08);
+      border-left-color: var(--accent-emerald);
+    }
+    .callout-warning {
+      background: rgba(245, 158, 11, 0.08);
+      border-left-color: var(--accent-amber);
+    }
+    .callout .callout-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .callout .callout-body {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+    .callout .callout-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* ---------------- DATA TABLES ---------------- */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    table.doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    table.doc-table th {
+      background: var(--bg-surface-elevated);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    table.doc-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    table.doc-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    code.inline-code {
+      font-family: var(--font-code);
+      background: var(--bg-surface-elevated);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.82em;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* ---------------- INTERACTIVE PLAYGROUND ---------------- */
+    .playground-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin: 28px 0;
+      box-shadow: 0 0 25px var(--primary-glow);
+    }
+
+    .playground-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .playground-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-action:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .btn-action.btn-primary-action {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-action.btn-primary-action:hover {
+      background: var(--primary-hover);
+    }
+
+    #live-editor-mount {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      min-height: 260px;
+      margin-bottom: 16px;
+    }
+
+    .output-viewer {
+      background: var(--bg-code);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: #10b981;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* ---------------- RESPONSIVE STYLES ---------------- */
+    @media (max-width: 1180px) {
+      aside.doc-toc {
+        display: none;
+      }
+      main.doc-main {
+        margin-right: 0;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .menu-toggle-btn {
+        display: block;
+      }
+      aside.doc-sidebar {
+        transform: translateX(-100%);
+      }
+      aside.doc-sidebar.open {
+        transform: translateX(0);
+        box-shadow: 20px 0 50px rgba(0,0,0,0.4);
+      }
+      main.doc-main {
+        margin-left: 0;
+        padding: 24px 20px;
+      }
+      .header-search {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="doc-header">
+    <div class="header-left">
+      <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Toggle menu">☰</button>
+      <a href="#overview" class="brand-logo">
+        <div class="brand-icon-box">U</div>
+        <span>Universal Editor</span>
+        <span class="brand-badge">v1.0.1</span>
+      </a>
+    </div>
+
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="docSearchInput" placeholder="ডকুমেন্টেশন খুঁজুন (যেমন: Vue 3, CDN, API)...">
+    </div>
+
+    <div class="header-actions">
+      <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">🌙</button>
+      <a href="https://www.npmjs.com/package/@shamimsofte/universal-editor-core" target="_blank" class="header-link-btn" title="NPM Package">
+        <span>📦 NPM</span>
+      </a>
+      <a href="https://packagist.org/packages/shamimsofte/laravel-universal-editor" target="_blank" class="header-link-btn" title="Packagist Composer">
+        <span>🐘 Composer</span>
+      </a>
+      <a href="https://github.com/shamimSoftE/universal-editor" target="_blank" class="header-link-btn btn-github">
+        <span>⭐ GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= LAYOUT ================= -->
+  <div class="doc-layout">
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <aside class="doc-sidebar" id="docSidebar">
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">🚀 পরিচিতি ও শুরু</div>
+        <ul class="sidebar-menu">
+          <li><a href="#overview" class="sidebar-link active"><span>📖 সার্বিক পরিচিতি (Overview)</span></a></li>
+          <li><a href="#comparison" class="sidebar-link"><span>⚖️ কেন TinyMCE-এর বিকল্প?</span></a></li>
+          <li><a href="#playground" class="sidebar-link"><span>⚡ লাইভ প্লেগ্রাউন্ড (Try Live)</span><span class="badge-tag">Interactive</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">📦 প্ল্যাটফর্ম ইনস্টলেশন</div>
+        <ul class="sidebar-menu">
+          <li><a href="#install-cdn" class="sidebar-link"><span>🌐 Plain HTML / PHP (CDN)</span></a></li>
+          <li><a href="#install-vue3" class="sidebar-link"><span>🟢 Vue 3 (Vite / Nuxt 3)</span></a></li>
+          <li><a href="#install-vue2" class="sidebar-link"><span>🟡 Vue 2 (Vue 2.6 / 2.7)</span></a></li>
+          <li><a href="#install-laravel" class="sidebar-link"><span>🔴 Laravel (10, 11, 12, 13)</span><span class="badge-tag">Packagist</span></a></li>
+          <li><a href="#install-react" class="sidebar-link"><span>⚛️ React / Next.js Guide</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">🛠️ মূল ফিচারসমূহ</div>
+        <ul class="sidebar-menu">
+          <li><a href="#feature-slash" class="sidebar-link"><span>⚡ Notion স্ল্যাশ কমান্ড (/)</span></a></li>
+          <li><a href="#feature-bubble" class="sidebar-link"><span>💬 ফ্লোটিং বাবল মেনু</span></a></li>
+          <li><a href="#feature-media" class="sidebar-link"><span>🖼️ ছবি ও ফাইল ড্রপ-আপলোড</span></a></li>
+          <li><a href="#feature-tables" class="sidebar-link"><span>📊 টেবিল ও কনটেক্সট মেনু</span></a></li>
+          <li><a href="#feature-code" class="sidebar-link"><span>💻 কোড সিনট্যাক্স হাইলাইটিং</span></a></li>
+          <li><a href="#feature-security" class="sidebar-link"><span>🛡️ XSS সিকিউরিটি স্যানিটাইজার</span></a></li>
+          <li><a href="#feature-theming" class="sidebar-link"><span>🎨 থিমিং ও ডার্ক মোড</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-group-title">📚 রেফারেন্স ও সাপোর্ট</div>
+        <ul class="sidebar-menu">
+          <li><a href="#api-reference" class="sidebar-link"><span>⚙️ API Methods & Options</span></a></li>
+          <li><a href="#faq" class="sidebar-link"><span>❓ সাধারণ জিজ্ঞাসা (FAQ)</span></a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="doc-main">
+
+      <!-- SECTION: OVERVIEW -->
+      <section id="overview" class="doc-section">
+        <div class="hero-banner">
+          <h1 class="hero-title">Universal Rich Text Editor</h1>
+          <p class="hero-desc">
+            একটি আধুনিক, হাই-পারফরম্যান্স এবং সম্পূর্ণ ফ্রেমওয়ার্ক-স্বাধীন রিচ টেক্সট এডিটর ইঞ্জিন। ProseMirror এবং TipTap আর্কিটেকচারে নির্মিত—যা সাধারণ HTML/PHP, Vue 3, Vue 2 এবং Laravel সহ যেকোনো ওয়েব প্রজেক্টে নির্বিঘ্নে কাজ করে।
+          </p>
+          <div class="hero-badges-row">
+            <span class="badge-pill">🛡️ Built-in XSS Sanitization</span>
+            <span class="badge-pill">⚡ Notion Slash Commands</span>
+            <span class="badge-pill">🌐 Global Anycast CDN</span>
+            <span class="badge-pill">🐘 Laravel 10 - 13 Ready</span>
+            <span class="badge-pill">📱 WCAG 2.1 AA Compliant</span>
+          </div>
+        </div>
+
+        <h2 class="section-heading">মূল সুবিধাসমূহ</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="card-icon">🚀</span>
+            <h4>জিরো কনফিগ ও ফ্রেমওয়ার্ক স্বাধীন</h4>
+            <p>কোনো Webpack বা Vite বিল্ড ছাড়াই সাধারণ সিডিএন `<script>` ট্যাগ দিয়ে যেকোনো ব্রাউজারে ইনস্ট্যান্ট চলে।</p>
+          </div>
+          <div class="feature-card">
+            <span class="card-icon">🛡️</span>
+            <h4>এন্টারপ্রাইজ সিকিউরিটি</h4>
+            <p>ক্লায়েন্ট ও সার্ভার উভয় প্রান্তে ক্ষতিকর স্ক্রিপ্ট ও XSS ইনজেকশন ব্লক করতে স্বয়ংক্রিয় স্যানিটাইজার যুক্ত।</p>
+          </div>
+          <div class="feature-card">
+            <span class="card-icon">🎨</span>
+            <h4>মডার্ন ও সমৃদ্ধ ইউজার এক্সপেরিয়েন্স</h4>
+            <p>Notion-স্টাইল স্ল্যাশ কমান্ড (`/`), টেক্সট সিলেক্ট করলে ভেসে ওঠা বাবল মেনু এবং পরিচ্ছন্ন ডার্ক মোড।</p>
+          </div>
+          <div class="feature-card">
+            <span class="card-icon">🌍</span>
+            <h4>নির্ভুল ইউনিকোড ও বাংলা সাপোর্ট</h4>
+            <p>বাংলা যুক্তাক্ষর, আরবি RTL এবং আন্তর্জাতিক সকল ফন্ট ও ভাষার জন্য বিশেষভাবে অপ্টিমাইজড।</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: COMPARISON -->
+      <section id="comparison" class="doc-section">
+        <h2 class="section-heading">কেন TinyMCE-এর চেয়ে আধুনিক ও সুবিধাজনক?</h2>
+        <p class="lead-text">প্রথাগত রিচ টেক্সট এডিটরগুলোর সীমাবদ্ধতা দূর করে ইউনিভার্সাল এডিটর তৈরি করা হয়েছে:</p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>ফিচার</th>
+                <th>Universal Editor (আমাদের)</th>
+                <th>TinyMCE</th>
+                <th>CKEditor 5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>মূল্য / লাইসেন্স</strong></td>
+                <td><span style="color:var(--accent-emerald); font-weight:700;">১০০% ফ্রি ও ওপেন সোর্স (MIT)</span></td>
+                <td>ক্লাউড এপিআই কি প্রয়োজন / পেইড টিয়ার</td>
+                <td>জিপিএল / বাণিজ্যিক লাইসেন্স ফ্রি নয়</td>
+              </tr>
+              <tr>
+                <td><strong>স্ল্যাশ কমান্ড (/)</strong></td>
+                <td><span style="color:var(--accent-emerald);">✅ বিল্ট-ইন Notion-Style</span></td>
+                <td>❌ প্রিমিয়াম প্লাগইন প্রয়োজন</td>
+                <td>❌ জটিল সেটআপ</td>
+              </tr>
+              <tr>
+                <td><strong>ফ্রেমওয়ার্ক সাপোর্ট</strong></td>
+                <td><span style="color:var(--accent-emerald);">✅ Vanilla JS, Vue 3, Vue 2, Laravel</span></td>
+                <td>আলাদা আলাদা প্যাকেজ ম্যানেজমেন্ট</td>
+                <td>আলাদা অ্যাডাপ্টার</td>
+              </tr>
+              <tr>
+                <td><strong>লারাভেল ইন্টিগ্রেশন</strong></td>
+                <td><span style="color:var(--accent-emerald);">✅ রেডিমেড ব্যাকএন্ড + মাইগ্রেশন</span></td>
+                <td>❌ নিজেকে বানাতে হয়</td>
+                <td>❌ নিজেকে বানাতে হয়</td>
+              </tr>
+              <tr>
+                <td><strong>ডার্ক মোড</strong></td>
+                <td><span style="color:var(--accent-emerald);">✅ প্রি-কনফিগারড আধুনিক ডার্ক থিম</span></td>
+                <td>স্কিন কনফিগারেশন জটিল</td>
+                <td>ম্যানুয়াল সিএসএস করতে হয়</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: PLAYGROUND -->
+      <section id="playground" class="doc-section">
+        <h2 class="section-heading">⚡ লাইভ ইন্টারেক্টিভ প্লেগ্রাউন্ড (Try Live)</h2>
+        <p class="lead-text">নিচের এডিটরটি সরাসরি আপনার ব্রাউজারে লাইভ CDN থেকে চলছে! এখনই কিছু লিখে বা <code>/</code> চেপে পরীক্ষা করুন:</p>
+
+        <div class="playground-box">
+          <div class="playground-header">
+            <div>
+              <strong style="color: var(--primary);">লাইভ এডিটর উইন্ডো</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 8px;">(jsDelivr CDN Active)</span>
+            </div>
+            <div class="playground-controls">
+              <button class="btn-action" id="btnTogglePlaygroundTheme">🌗 থিম পরিবর্তন</button>
+              <button class="btn-action" id="btnClearPlayground">🗑️ ক্লিয়ার</button>
+              <button class="btn-action btn-primary-action" id="btnInspectHTML">👁️ HTML দেখুন</button>
+            </div>
+          </div>
+
+          <!-- The Live Editor Container -->
+          <div id="live-editor-mount"></div>
+
+          <div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">লাইভ HTML আউটপুট (Real-time DB Payload):</div>
+            <div class="output-viewer" id="liveOutputViewer">&lt;p&gt;এখানে আপনার লেখার রিয়েল-টাইম HTML দেখা যাবে...&lt;/p&gt;</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: INSTALLATION TABS -->
+      <section id="installation" class="doc-section">
+        <h2 class="section-heading">📦 প্রজেক্ট অনুযায়ী ইন্টিগ্রেশন গাইড</h2>
+        <p class="lead-text">আপনার প্রোজেক্টের টেকনোলজি অনুযায়ী ট্যাব নির্বাচন করুন:</p>
+
+        <div class="tab-container">
+          <div class="tab-header">
+            <button class="tab-btn active" data-tab="tab-cdn">🌐 Vanilla JS / PHP / HTML</button>
+            <button class="tab-btn" data-tab="tab-vue3">🟢 Vue 3 (Vite / Nuxt)</button>
+            <button class="tab-btn" data-tab="tab-vue2">🟡 Vue 2.6 / 2.7</button>
+            <button class="tab-btn" data-tab="tab-laravel">🔴 Laravel 10 - 13</button>
+            <button class="tab-btn" data-tab="tab-react">⚛️ React / Next.js</button>
+          </div>
+
+          <!-- TAB 1: CDN / VANILLA JS -->
+          <div class="tab-content active" id="tab-cdn">
+            <h3 class="sub-heading">TinyMCE-এর মতো সরাসরি CDN দিয়ে ব্যবহার</h3>
+            <p class="lead-text">যেকোনো সাধারণ <strong>HTML</strong>, <strong>Raw PHP</strong>, <strong>CodeIgniter</strong> বা <strong>WordPress</strong> ফাইলে এক লাইনে যুক্ত করুন:</p>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>index.html</span>
+                <button class="copy-btn" data-copy-target="code-cdn-example">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-cdn-example">&lt;!DOCTYPE html&gt;
+&lt;html lang="bn"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;My Web Application&lt;/title&gt;
+
+  &lt;!-- ১. এডিটরের সিএসএস স্টাইলশিট (jsDelivr CDN) --&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ২. এডিটর রেন্ডার করার জন্য একটি খালি div কন্টেইনার দিন --&gt;
+  &lt;div id="my-editor" style="max-width: 900px; margin: 30px auto;"&gt;&lt;/div&gt;
+
+  &lt;button id="saveBtn"&gt;কন্টেন্ট সংরক্ষণ করুন&lt;/button&gt;
+
+  &lt;!-- ৩. এডিটরের কোর জাভাস্ক্রিপ্ট ইঞ্জিন লিঙ্ক করুন --&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js"&gt;&lt;/script&gt;
+
+  &lt;script&gt;
+    // ৪. এডিটর চালু (Initialize) করুন
+    const editor = UniversalEditor.createEditor({
+      element: '#my-editor',
+      content: '&lt;h2&gt;স্বাগতম!&lt;/h2&gt;&lt;p&gt;লেখা শুরু করতে টাইপ করুন অথবা কমান্ডের জন্য "/" চাপুন।&lt;/p&gt;',
+      placeholder: 'কিছু লিখুন বা কমান্ডের জন্য "/" চাপুন...',
+      theme: 'light', // অথবা 'dark'
+      enableToolbar: true,
+      enableBubbleMenu: true,
+      enableSlashCommands: true,
+      onUpdate: ({ editor }) =&gt; {
+        console.log('আপডেট হওয়া কন্টেন্ট:', editor.getHTML());
+      }
+    });
+
+    // ৫. কন্টেন্ট নেওয়া বা ফর্ম সাবমিট করা
+    document.getElementById('saveBtn').addEventListener('click', () =&gt; {
+      const htmlContent = editor.getHTML();
+      alert('সংরক্ষিত ডেটা:\n\n' + htmlContent);
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+            </div>
+
+            <div class="callout callout-info">
+              <span class="callout-icon">💡</span>
+              <div class="callout-body">
+                <div class="callout-title">বিকল্প unpkg CDN লিঙ্ক:</div>
+                আপনি চাইলে jsDelivr-এর পরিবর্তে unpkg ও ব্যবহার করতে পারেন:
+                <br><code>https://unpkg.com/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: VUE 3 -->
+          <div class="tab-content" id="tab-vue3">
+            <h3 class="sub-heading">Vue 3 অ্যাপ্লিকেশনে ব্যবহার (Vite, Nuxt 3)</h3>
+            <p class="lead-text">রিয়েক্টিভ <code>v-model</code> বাইন্ডিং সহ সম্পূর্ণ কম্পোনেন্ট সাপোর্ট:</p>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>Terminal</span>
+                <button class="copy-btn" data-copy-target="code-vue3-install">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-vue3-install">npm install @shamimsofte/universal-editor-vue3 @shamimsofte/universal-editor-core</pre>
+            </div>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>ArticleEditor.vue</span>
+                <button class="copy-btn" data-copy-target="code-vue3-example">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-vue3-example">&lt;template&gt;
+  &lt;div class="editor-wrapper"&gt;
+    &lt;RichTextEditor
+      v-model="articleContent"
+      placeholder="আপনার পোস্ট লিখুন..."
+      theme="light"
+      :enable-toolbar="true"
+      :enable-bubble-menu="true"
+      :enable-slash-commands="true"
+      :upload-url="'/api/editor/upload'"
+      @update="handleUpdate"
+    /&gt;
+    &lt;button @click="publishPost" class="btn"&gt;পাবলিশ করুন&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue';
+import { RichTextEditor } from '@shamimsofte/universal-editor-vue3';
+import '@shamimsofte/universal-editor-vue3/style.css';
+
+const articleContent = ref('&lt;h1&gt;নতুন পোস্ট&lt;/h1&gt;&lt;p&gt;এখানে আপনার লেখা শুরু করুন।&lt;/p&gt;');
+
+function handleUpdate({ editor }) {
+  console.log('ক্যারেক্টার সংখ্যা:', editor.getText().length);
+}
+
+function publishPost() {
+  console.log('Payload for API:', articleContent.value);
+}
+&lt;/script&gt;</pre>
+            </div>
+          </div>
+
+          <!-- TAB 3: VUE 2 -->
+          <div class="tab-content" id="tab-vue2">
+            <h3 class="sub-heading">Vue 2 অ্যাপ্লিকেশনে ব্যবহার (Vue 2.6+ ও 2.7)</h3>
+            
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>Terminal</span>
+                <button class="copy-btn" data-copy-target="code-vue2-install">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-vue2-install">npm install @shamimsofte/universal-editor-vue2 @shamimsofte/universal-editor-core</pre>
+            </div>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>LegacyEditor.vue</span>
+                <button class="copy-btn" data-copy-target="code-vue2-example">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-vue2-example">&lt;template&gt;
+  &lt;div&gt;
+    &lt;RichTextEditor
+      v-model="content"
+      placeholder="Vue 2 এডিটর..."
+      theme="light"
+      :enable-toolbar="true"
+    /&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import { RichTextEditor } from '@shamimsofte/universal-editor-vue2';
+
+export default {
+  components: { RichTextEditor },
+  data() {
+    return {
+      content: '&lt;p&gt;Vue 2 অ্যাপ্লিকেশনে সফলভাবে চলছে।&lt;/p&gt;'
+    };
+  }
+};
+&lt;/script&gt;</pre>
+            </div>
+          </div>
+
+          <!-- TAB 4: LARAVEL -->
+          <div class="tab-content" id="tab-laravel">
+            <h3 class="sub-heading">Laravel ব্যাকএন্ড ইন্টিগ্রেশন (Laravel 10, 11, 12, 13)</h3>
+            <p class="lead-text">অফিশিয়াল Composer প্যাকেজের মাধ্যমে ব্যাকএন্ড সিকিউরিটি, XSS স্যানিটাইজার ও রেডিমেড API এন্ডপয়েন্ট পান:</p>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>Terminal</span>
+                <button class="copy-btn" data-copy-target="code-laravel-install">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-laravel-install"># ১. কম্পোজার প্যাকেজ ইন্সটল
+composer require shamimsofte/laravel-universal-editor
+
+# ২. কনফিগারেশন ফাইল পাবলিশ (config/editor.php)
+php artisan vendor:publish --tag=editor-config
+
+# ৩. ডেটাবেজ মাইগ্রেশন রান (ডকুমেন্ট ও ভার্সন টেবিল তৈরি)
+php artisan vendor:publish --tag=editor-migrations
+php artisan migrate
+
+# ৪. স্টোরেজ সিমলিংক (ইমেজ আপলোডের জন্য)
+php artisan storage:link</pre>
+            </div>
+
+            <h4 style="margin: 20px 0 10px 0;">কন্ট্রোলারে XSS Safe স্যানিটাইজ করার নিয়ম:</h4>
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>ArticleController.php</span>
+                <button class="copy-btn" data-copy-target="code-laravel-controller">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-laravel-controller">&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use UniversalEditor\Laravel\Facades\Editor;
+use UniversalEditor\Laravel\Models\EditorDocument;
+
+class ArticleController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request-&gt;validate([
+            'title' =&gt; 'required|string|max:255',
+            'content_html' =&gt; 'required|string',
+        ]);
+
+        // ক্ষতিকর হ্যাকিং ও XSS স্ক্রিপ্ট স্বয়ংক্রিয়ভাবে ফিল্টার করুন
+        $safeHtml = Editor::sanitize($request-&gt;input('content_html'));
+
+        $doc = EditorDocument::create([
+            'title'        =&gt; $request-&gt;input('title'),
+            'content_html' =&gt; $safeHtml,
+            'user_id'      =&gt; auth()-&gt;id() ?? 1,
+        ]);
+
+        return response()-&gt;json(['success' =&gt; true, 'document' =&gt; $doc]);
+    }
+}</pre>
+            </div>
+          </div>
+
+          <!-- TAB 5: REACT -->
+          <div class="tab-content" id="tab-react">
+            <h3 class="sub-heading">React / Next.js অ্যাপ্লিকেশনে ব্যবহার</h3>
+            <p class="lead-text">যেহেতু কোর ইঞ্জিন ফ্রেমওয়ার্ক-স্বাধীন, তাই React-এ একটি <code>useEffect</code> ও <code>useRef</code> দিয়ে অনায়াসে চালানো যায়:</p>
+
+            <div class="code-box">
+              <div class="code-box-header">
+                <span>UniversalEditorReact.jsx</span>
+                <button class="copy-btn" data-copy-target="code-react-example">📋 কপি করুন</button>
+              </div>
+              <pre class="code-block" id="code-react-example">import React, { useEffect, useRef } from 'react';
+import { createEditor } from '@shamimsofte/universal-editor-core';
+import '@shamimsofte/universal-editor-core/styles.css';
+
+export function ReactRichEditor({ value, onChange }) {
+  const containerRef = useRef(null);
+  const editorRef = useRef(null);
+
+  useEffect(() =&gt; {
+    if (!containerRef.current) return;
+
+    editorRef.current = createEditor({
+      element: containerRef.current,
+      content: value || '',
+      enableToolbar: true,
+      enableSlashCommands: true,
+      onUpdate: ({ editor }) =&gt; {
+        if (onChange) onChange(editor.getHTML());
+      }
+    });
+
+    return () =&gt; {
+      if (editorRef.current) editorRef.current.destroy();
+    };
+  }, []);
+
+  return &lt;div ref={containerRef} className="react-editor-container" /&gt;;
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: FEATURES -->
+      <section id="features" class="doc-section">
+        <h2 class="section-heading">🌟 বিশেষ ফিচারসমূহের বিস্তারিত গাইড</h2>
+
+        <div id="feature-slash">
+          <h3 class="sub-heading">১. Notion-Style Slash (<code>/</code>) কমান্ড</h3>
+          <p class="lead-text">
+            কিবোর্ডে শুধু <code>/</code> চাপলেই একটি ফ্লুয়েন্ট কমান্ড প্যালেট ভেসে ওঠে। এখান থেকে ইউজার মাউস স্পর্শ না করেই হেডিং, লিস্ট, টেবিল, কোড ব্লক, ছবি বা কোটেশন নির্বাচন করতে পারে।
+          </p>
+        </div>
+
+        <div id="feature-bubble">
+          <h3 class="sub-heading">২. ফ্লোটিং বাবল মেনু (Floating Bubble Menu)</h3>
+          <p class="lead-text">
+            যখনই ব্যবহারকারী লেখার কোনো অংশ মাউস দিয়ে হাইলাইট করেন, সাথে সাথে তার কার্সারের ঠিক উপরে একটি দ্রুত ফরম্যাটিং পপওভার (Bold, Italic, Link, Color, Heading) হাজির হয়।
+          </p>
+        </div>
+
+        <div id="feature-media">
+          <h3 class="sub-heading">৩. ড্র্যাগ-অ্যান্ড-ড্রপ ও ক্লিপবোর্ড ইমেজ পেস্ট</h3>
+          <p class="lead-text">
+            যেকোনো ছবি বা ফাইল ডেস্কটপ থেকে ড্র্যাগ করে এডিটরে ড্রপ করলে বা স্ক্রিনশট <code>Ctrl+V</code> দিলে স্বয়ংক্রিয়ভাবে ব্যাকএন্ড এপিআইতে আপলোড হয়ে ডকুমেন্টে বসে যায়।
+          </p>
+        </div>
+
+        <div id="feature-tables">
+          <h3 class="sub-heading">৪. টেবিল তৈরি ও ইন্টারেক্টিভ কনটেক্সট মেনু</h3>
+          <p class="lead-text">
+            রো ও কলাম যোগ করা, ডিলিট করা, হেডার টগল করা এবং সেল মার্জ করার সুবিধা সমৃদ্ধ ডেডিকেটেড কনটেক্সট মেনু যুক্ত।
+          </p>
+        </div>
+
+        <div id="feature-security">
+          <h3 class="sub-heading">৫. এন্টারপ্রাইজ সিকিউরিটি (XSS Safe)</h3>
+          <p class="lead-text">
+            ব্যবহারকারী যদি কোনো ক্ষতিকর জাভাস্ক্রিপ্ট ট্যাগ (যেমন: <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> বা <code>&lt;img onerror="..."&gt;</code>) পেস্ট করে, এডিটরের স্যানিটাইজার তা সম্পূর্ণ পরিষ্কার করে ফেলে।
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION: API REFERENCE -->
+      <section id="api-reference" class="doc-section">
+        <h2 class="section-heading">⚙️ API Reference & Instance Methods</h2>
+        <p class="lead-text"><code>createEditor()</code> থেকে প্রাপ্ত ইনস্ট্যান্সের প্রধান মেথডসমূহ:</p>
+
+        <div class="table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Return Type</th>
+                <th>বিবরণ (Description)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="inline-code">getHTML()</code></td>
+                <td><code class="inline-code">string</code></td>
+                <td>ডকুমেন্টের সম্পূর্ণ ক্লিন HTML রিটার্ন করে (ডাটাবেজে সেভ করার জন্য)।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">getText()</code></td>
+                <td><code class="inline-code">string</code></td>
+                <td>ডকুমেন্টের সমস্ত প্লেইন টেক্সট রিটার্ন করে।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">getJSON()</code></td>
+                <td><code class="inline-code">object</code></td>
+                <td>ProseMirror JSON Abstract Syntax Tree (AST) রিটার্ন করে।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">setContent(content)</code></td>
+                <td><code class="inline-code">void</code></td>
+                <td>এডিটরের কন্টেন্ট প্রোগ্রাম্যাটিকভাবে পরিবর্তন করতে ব্যবহৃত হয়।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">clearContent()</code></td>
+                <td><code class="inline-code">void</code></td>
+                <td>এডিটর সম্পূর্ণ খালি করে।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">setTheme(theme)</code></td>
+                <td><code class="inline-code">void</code></td>
+                <td>রানটাইমে থিম পরিবর্তন করে (<code class="inline-code">'light'</code>, <code class="inline-code">'dark'</code>, <code class="inline-code">'sepia'</code>)।</td>
+              </tr>
+              <tr>
+                <td><code class="inline-code">destroy()</code></td>
+                <td><code class="inline-code">void</code></td>
+                <td>এডিটর ইনস্ট্যান্স নষ্ট করে মেমোরি খালি করে।</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: FAQ -->
+      <section id="faq" class="doc-section">
+        <h2 class="section-heading">❓ সাধারণ জিজ্ঞাসা (FAQ)</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">📌</span>
+          <div class="callout-body">
+            <div class="callout-title">প্রশ্ন: এই এডিটর ব্যবহার করতে কি কোনো লাইসেন্স ফি দিতে হবে?</div>
+            উত্তর: না, এটি সম্পূর্ণ <strong>MIT License</strong>-এর অধীনে প্রকাশিত। আপনি ব্যক্তিগত এবং বাণিজ্যিক যেকোনো সফটওয়্যার বা ক্লায়েন্ট প্রজেক্টে ফ্রিতে ব্যবহার করতে পারেন।
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">📌</span>
+          <div class="callout-body">
+            <div class="callout-title">প্রশ্ন: লাইভ সাইটে সিডিএন নাকি এনপিএম কোনটি বেশি উপযোগী?</div>
+            উত্তর: সাধারণ HTML বা PHP সাইটের জন্য <strong>jsDelivr CDN</strong> সবচেয়ে দ্রুত ও সহজ। তবে বড় Vue বা React প্রজেক্টে বান্ডেল অপ্টিমাইজেশনের জন্য <strong>NPM</strong> প্যাকেজ ব্যবহার করাই বেস্ট প্র্যাকটিস।
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= RIGHT TOC ================= -->
+    <aside class="doc-toc">
+      <div class="toc-title">এই পাতায় আছে</div>
+      <ul class="toc-list">
+        <li><a href="#overview" class="toc-link">সার্বিক পরিচিতি</a></li>
+        <li><a href="#comparison" class="toc-link">TinyMCE এর বিকল্প</a></li>
+        <li><a href="#playground" class="toc-link">লাইভ প্লেগ্রাউন্ড</a></li>
+        <li><a href="#installation" class="toc-link">প্ল্যাটফর্ম ইনস্টলেশন</a></li>
+        <li><a href="#features" class="toc-link">বিশেষ ফিচারসমূহ</a></li>
+        <li><a href="#api-reference" class="toc-link">API রেফারেন্স</a></li>
+        <li><a href="#faq" class="toc-link">সাধারণ জিজ্ঞাসা</a></li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    // 1. DAY / NIGHT THEME TOGGLE WITH LOCALSTORAGE
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const htmlElem = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElem.setAttribute('data-theme', theme);
+      themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('doc-theme', theme);
+
+      // Also update the live playground editor theme if mounted
+      if (window.liveEditorInstance) {
+        window.liveEditorInstance.setTheme(theme);
+      }
+    }
+
+    const savedTheme = localStorage.getItem('doc-theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElem.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // 2. MOBILE MENU TOGGLE
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const docSidebar = document.getElementById('docSidebar');
+
+    menuToggleBtn.addEventListener('click', () => {
+      docSidebar.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 860) {
+          docSidebar.classList.remove('open');
+        }
+      });
+    });
+
+    // 3. TABS SWITCHER
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-tab');
+
+        tabButtons.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+
+    // 4. COPY CODE SNIPPETS
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-copy-target');
+        const codeElement = document.getElementById(targetId);
+        if (codeElement) {
+          const textToCopy = codeElement.innerText;
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const originalText = btn.textContent;
+            btn.textContent = '✅ কপি হয়েছে!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = originalText;
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        }
+      });
+    });
+
+    // 5. LIVE SEARCH FILTER
+    const searchInput = document.getElementById('docSearchInput');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.doc-section').forEach(section => {
+        if (!query) {
+          section.style.display = 'block';
+          return;
+        }
+        const text = section.innerText.toLowerCase();
+        section.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    });
+
+    // 6. INITIALIZE LIVE PLAYGROUND EDITOR
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        if (window.UniversalEditor && window.UniversalEditor.createEditor) {
+          window.liveEditorInstance = window.UniversalEditor.createEditor({
+            element: '#live-editor-mount',
+            content: '<h2>🚀 Universal Editor লাইভ স্যান্ডবক্স</h2><p>এখানে আপনি যা খুশি টাইপ করতে পারেন! টেক্সট সিলেক্ট করে <b>বাবল মেনু</b> অথবা নতুন লাইনে <code>/</code> চেপে <b>স্ল্যাশ কমান্ড</b> টেস্ট করুন।</p>',
+            placeholder: 'কিছু লিখুন বা কমান্ডের জন্য "/" চাপুন...',
+            theme: htmlElem.getAttribute('data-theme') || 'dark',
+            enableToolbar: true,
+            enableBubbleMenu: true,
+            enableSlashCommands: true,
+            onUpdate: ({ editor }) => {
+              const html = editor.getHTML();
+              document.getElementById('liveOutputViewer').textContent = html;
+            }
+          });
+
+          // Initial output
+          document.getElementById('liveOutputViewer').textContent = window.liveEditorInstance.getHTML();
+        }
+      } catch (err) {
+        console.warn('Live editor initialization notice:', err);
+      }
+    });
+
+    // Playground buttons
+    document.getElementById('btnClearPlayground').addEventListener('click', () => {
+      if (window.liveEditorInstance) {
+        window.liveEditorInstance.clearContent();
+        document.getElementById('liveOutputViewer').textContent = '';
+      }
+    });
+
+    document.getElementById('btnInspectHTML').addEventListener('click', () => {
+      if (window.liveEditorInstance) {
+        alert('বর্তমান HTML Payload:\n\n' + window.liveEditorInstance.getHTML());
+      }
+    });
+
+    document.getElementById('btnTogglePlaygroundTheme').addEventListener('click', () => {
+      if (window.liveEditorInstance) {
+        const currentTheme = htmlElem.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme);
+      }
+    });
+
+    // 7. SCROLL SPY FOR TOC AND SIDEBAR
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 100;
+      document.querySelectorAll('.doc-section').forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+
+        if (scrollPos >= top && scrollPos < top + height) {
+          document.querySelectorAll('.toc-link').forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+          document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
