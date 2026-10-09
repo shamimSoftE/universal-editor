@@ -14,7 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js"></script>
 
   <style>
-    :root {
+    :root, [data-theme="light"] {
       --font-main: 'Plus Jakarta Sans', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-code: 'Fira Code', monospace;
 
@@ -28,7 +28,7 @@
       --border-strong: #cbd5e1;
       
       --text-main: #0f172a;
-      --text-muted: #64748b;
+      --text-muted: #475569;
       --text-subtle: #94a3b8;
       
       --primary: #4f46e5;
@@ -119,9 +119,7 @@
       left: 0;
       right: 0;
       height: var(--header-height);
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: var(--bg-surface);
       border-bottom: 1px solid var(--border-subtle);
       z-index: 100;
       display: flex;
@@ -129,9 +127,7 @@
       justify-content: space-between;
       padding: 0 24px;
       transition: background-color 0.25s ease, border-color 0.25s ease;
-    }
-    [data-theme="light"] header.doc-header {
-      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-sm);
     }
 
     .header-left {
@@ -243,7 +239,7 @@
     }
     .theme-toggle-btn:hover {
       border-color: var(--primary);
-      transform: rotate(15deg);
+      transform: scale(1.08);
     }
 
     .header-link-btn {
@@ -331,6 +327,7 @@
       font-weight: 500;
       transition: all 0.15s ease;
       line-height: 1.4;
+      cursor: pointer;
     }
 
     .sidebar-link:hover {
@@ -930,7 +927,7 @@
           <div class="feature-card">
             <span class="card-icon">🚀</span>
             <h4>জিরো কনফিগ ও ফ্রেমওয়ার্ক স্বাধীন</h4>
-            <p>কোনো Webpack বা Vite বিল্ড ছাড়াই সাধারণ সিডিএন `<script>` ট্যাগ দিয়ে যেকোনো ব্রাউজারে ইনস্ট্যান্ট চলে।</p>
+            <p>কোনো Webpack বা Vite বিল্ড ছাড়াই সাধারণ সিডিএন &lt;script&gt; ট্যাগ দিয়ে যেকোনো ব্রাউজারে ইনস্ট্যান্ট চলে।</p>
           </div>
           <div class="feature-card">
             <span class="card-icon">🛡️</span>
@@ -1311,38 +1308,52 @@ export function ReactRichEditor({ value, onChange }) {
       <section id="features" class="doc-section">
         <h2 class="section-heading">🌟 বিশেষ ফিচারসমূহের বিস্তারিত গাইড</h2>
 
-        <div id="feature-slash">
+        <div id="feature-slash" class="doc-sub-section">
           <h3 class="sub-heading">১. Notion-Style Slash (<code>/</code>) কমান্ড</h3>
           <p class="lead-text">
             কিবোর্ডে শুধু <code>/</code> চাপলেই একটি ফ্লুয়েন্ট কমান্ড প্যালেট ভেসে ওঠে। এখান থেকে ইউজার মাউস স্পর্শ না করেই হেডিং, লিস্ট, টেবিল, কোড ব্লক, ছবি বা কোটেশন নির্বাচন করতে পারে।
           </p>
         </div>
 
-        <div id="feature-bubble">
+        <div id="feature-bubble" class="doc-sub-section">
           <h3 class="sub-heading">২. ফ্লোটিং বাবল মেনু (Floating Bubble Menu)</h3>
           <p class="lead-text">
             যখনই ব্যবহারকারী লেখার কোনো অংশ মাউস দিয়ে হাইলাইট করেন, সাথে সাথে তার কার্সারের ঠিক উপরে একটি দ্রুত ফরম্যাটিং পপওভার (Bold, Italic, Link, Color, Heading) হাজির হয়।
           </p>
         </div>
 
-        <div id="feature-media">
+        <div id="feature-media" class="doc-sub-section">
           <h3 class="sub-heading">৩. ড্র্যাগ-অ্যান্ড-ড্রপ ও ক্লিপবোর্ড ইমেজ পেস্ট</h3>
           <p class="lead-text">
             যেকোনো ছবি বা ফাইল ডেস্কটপ থেকে ড্র্যাগ করে এডিটরে ড্রপ করলে বা স্ক্রিনশট <code>Ctrl+V</code> দিলে স্বয়ংক্রিয়ভাবে ব্যাকএন্ড এপিআইতে আপলোড হয়ে ডকুমেন্টে বসে যায়।
           </p>
         </div>
 
-        <div id="feature-tables">
+        <div id="feature-tables" class="doc-sub-section">
           <h3 class="sub-heading">৪. টেবিল তৈরি ও ইন্টারেক্টিভ কনটেক্সট মেনু</h3>
           <p class="lead-text">
             রো ও কলাম যোগ করা, ডিলিট করা, হেডার টগল করা এবং সেল মার্জ করার সুবিধা সমৃদ্ধ ডেডিকেটেড কনটেক্সট মেনু যুক্ত।
           </p>
         </div>
 
-        <div id="feature-security">
-          <h3 class="sub-heading">৫. এন্টারপ্রাইজ সিকিউরিটি (XSS Safe)</h3>
+        <div id="feature-code" class="doc-sub-section">
+          <h3 class="sub-heading">৫. কোড ব্লক ও সিনট্যাক্স হাইলাইটিং</h3>
+          <p class="lead-text">
+            লোলাইট (Lowlight) ইঞ্জিনের মাধ্যমে JavaScript, Python, PHP, CSS, HTML সহ বহু ভাষার সিনট্যাক্স কালারিং ও ফরম্যাটিং সমর্থিত।
+          </p>
+        </div>
+
+        <div id="feature-security" class="doc-sub-section">
+          <h3 class="sub-heading">৬. এন্টারপ্রাইজ সিকিউরিটি (XSS Safe)</h3>
           <p class="lead-text">
             ব্যবহারকারী যদি কোনো ক্ষতিকর জাভাস্ক্রিপ্ট ট্যাগ (যেমন: <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> বা <code>&lt;img onerror="..."&gt;</code>) পেস্ট করে, এডিটরের স্যানিটাইজার তা সম্পূর্ণ পরিষ্কার করে ফেলে।
+          </p>
+        </div>
+
+        <div id="feature-theming" class="doc-sub-section">
+          <h3 class="sub-heading">৭. থিমিং ও ডার্ক মোড</h3>
+          <p class="lead-text">
+            বিল্ট-ইন লাইট, ডার্ক ও সেপিয়া মোড ছাড়াও CSS ভেরিয়েবল ওভাররাইড করে যেকোনো ব্র্যান্ড কালার অনুযায়ী কাস্টমাইজেশন করা যায়।
           </p>
         </div>
       </section>
@@ -1443,58 +1454,111 @@ export function ReactRichEditor({ value, onChange }) {
 
   <!-- ================= SCRIPTS ================= -->
   <script>
-    // 1. DAY / NIGHT THEME TOGGLE WITH LOCALSTORAGE
+    // Safe storage helper (prevents file:/// SecurityError crash)
+    function safeGetStorage(key, fallback) {
+      try {
+        return localStorage.getItem(key) || fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+    function safeSetStorage(key, val) {
+      try {
+        localStorage.setItem(key, val);
+      } catch (e) {}
+    }
+
+    // 1. DAY / NIGHT THEME TOGGLE
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const htmlElem = document.documentElement;
 
     function applyTheme(theme) {
       htmlElem.setAttribute('data-theme', theme);
-      themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-      localStorage.setItem('doc-theme', theme);
+      if (themeToggleBtn) {
+        themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+      safeSetStorage('doc-theme', theme);
 
       // Also update the live playground editor theme if mounted
-      if (window.liveEditorInstance) {
+      if (window.liveEditorInstance && typeof window.liveEditorInstance.setTheme === 'function') {
         window.liveEditorInstance.setTheme(theme);
       }
     }
 
-    const savedTheme = localStorage.getItem('doc-theme') || 'dark';
+    const savedTheme = safeGetStorage('doc-theme', 'dark');
     applyTheme(savedTheme);
 
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = htmlElem.getAttribute('data-theme');
-      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-
-    // 2. MOBILE MENU TOGGLE
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
-    const docSidebar = document.getElementById('docSidebar');
-
-    menuToggleBtn.addEventListener('click', () => {
-      docSidebar.classList.toggle('open');
-    });
-
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= 860) {
-          docSidebar.classList.remove('open');
-        }
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const currentTheme = htmlElem.getAttribute('data-theme') || 'dark';
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
       });
-    });
+    }
 
-    // 3. TABS SWITCHER
+    // 2. TABS SWITCHER
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
+
+    function switchTab(targetId) {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      const activeBtn = document.querySelector(`.tab-btn[data-tab="${targetId}"]`);
+      const activeContent = document.getElementById(targetId);
+
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    }
 
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetId = btn.getAttribute('data-tab');
+        switchTab(targetId);
+      });
+    });
 
-        tabButtons.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
+    // 3. SIDEBAR NAVIGATION & PLATFORM TABS AUTO-SWITCH
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const docSidebar = document.getElementById('docSidebar');
 
-        btn.classList.add('active');
-        document.getElementById(targetId).classList.add('active');
+    if (menuToggleBtn && docSidebar) {
+      menuToggleBtn.addEventListener('click', () => {
+        docSidebar.classList.toggle('open');
+      });
+    }
+
+    const platformTabMap = {
+      '#install-cdn': 'tab-cdn',
+      '#install-vue3': 'tab-vue3',
+      '#install-vue2': 'tab-vue2',
+      '#install-laravel': 'tab-laravel',
+      '#install-react': 'tab-react'
+    };
+
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+
+        // Handle platform tabs
+        if (href && platformTabMap[href]) {
+          e.preventDefault();
+          const targetTabId = platformTabMap[href];
+          switchTab(targetTabId);
+          const installSection = document.getElementById('installation');
+          if (installSection) {
+            installSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 860 && docSidebar) {
+          docSidebar.classList.remove('open');
+        }
+
+        // Active state
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
       });
     });
 
@@ -1513,6 +1577,8 @@ export function ReactRichEditor({ value, onChange }) {
               btn.textContent = originalText;
               btn.classList.remove('copied');
             }, 2000);
+          }).catch(() => {
+            btn.textContent = 'কপি করতে ব্যর্থ';
           });
         }
       });
@@ -1520,17 +1586,19 @@ export function ReactRichEditor({ value, onChange }) {
 
     // 5. LIVE SEARCH FILTER
     const searchInput = document.getElementById('docSearchInput');
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      document.querySelectorAll('.doc-section').forEach(section => {
-        if (!query) {
-          section.style.display = 'block';
-          return;
-        }
-        const text = section.innerText.toLowerCase();
-        section.style.display = text.includes(query) ? 'block' : 'none';
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.doc-section').forEach(section => {
+          if (!query) {
+            section.style.display = 'block';
+            return;
+          }
+          const text = section.innerText.toLowerCase();
+          section.style.display = text.includes(query) ? 'block' : 'none';
+        });
       });
-    });
+    }
 
     // 6. INITIALIZE LIVE PLAYGROUND EDITOR
     window.addEventListener('DOMContentLoaded', () => {
@@ -1546,39 +1614,48 @@ export function ReactRichEditor({ value, onChange }) {
             enableSlashCommands: true,
             onUpdate: ({ editor }) => {
               const html = editor.getHTML();
-              document.getElementById('liveOutputViewer').textContent = html;
+              const outputElem = document.getElementById('liveOutputViewer');
+              if (outputElem) outputElem.textContent = html;
             }
           });
 
-          // Initial output
-          document.getElementById('liveOutputViewer').textContent = window.liveEditorInstance.getHTML();
+          const outputElem = document.getElementById('liveOutputViewer');
+          if (outputElem) outputElem.textContent = window.liveEditorInstance.getHTML();
         }
       } catch (err) {
-        console.warn('Live editor initialization notice:', err);
+        console.warn('Live editor initialization:', err);
       }
     });
 
-    // Playground buttons
-    document.getElementById('btnClearPlayground').addEventListener('click', () => {
-      if (window.liveEditorInstance) {
-        window.liveEditorInstance.clearContent();
-        document.getElementById('liveOutputViewer').textContent = '';
-      }
-    });
+    // Playground control buttons
+    const btnClear = document.getElementById('btnClearPlayground');
+    if (btnClear) {
+      btnClear.addEventListener('click', () => {
+        if (window.liveEditorInstance) {
+          window.liveEditorInstance.clearContent();
+          const out = document.getElementById('liveOutputViewer');
+          if (out) out.textContent = '';
+        }
+      });
+    }
 
-    document.getElementById('btnInspectHTML').addEventListener('click', () => {
-      if (window.liveEditorInstance) {
-        alert('বর্তমান HTML Payload:\n\n' + window.liveEditorInstance.getHTML());
-      }
-    });
+    const btnInspect = document.getElementById('btnInspectHTML');
+    if (btnInspect) {
+      btnInspect.addEventListener('click', () => {
+        if (window.liveEditorInstance) {
+          alert('বর্তমান HTML Payload:\n\n' + window.liveEditorInstance.getHTML());
+        }
+      });
+    }
 
-    document.getElementById('btnTogglePlaygroundTheme').addEventListener('click', () => {
-      if (window.liveEditorInstance) {
-        const currentTheme = htmlElem.getAttribute('data-theme');
+    const btnPlaygroundTheme = document.getElementById('btnTogglePlaygroundTheme');
+    if (btnPlaygroundTheme) {
+      btnPlaygroundTheme.addEventListener('click', () => {
+        const currentTheme = htmlElem.getAttribute('data-theme') || 'dark';
         const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
         applyTheme(nextTheme);
-      }
-    });
+      });
+    }
 
     // 7. SCROLL SPY FOR TOC AND SIDEBAR
     window.addEventListener('scroll', () => {
@@ -1590,9 +1667,6 @@ export function ReactRichEditor({ value, onChange }) {
 
         if (scrollPos >= top && scrollPos < top + height) {
           document.querySelectorAll('.toc-link').forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-          });
-          document.querySelectorAll('.sidebar-link').forEach(link => {
             link.classList.toggle('active', link.getAttribute('href') === '#' + id);
           });
         }
