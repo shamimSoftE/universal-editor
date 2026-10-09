@@ -58,10 +58,20 @@
 ### পদ্ধতি ১: Plain HTML / PHP / CodeIgniter (Vanilla JS)
 আপনি যদি কোনো আধুনিক বিল্ড টুল (Webpack/Vite/NPM) ছাড়া সাধারণ **PHP**, **HTML**, বা **CodeIgniter** এ ব্যবহার করতে চান:
 
-#### ১.১. ফাইল দুটি আপনার প্রোজেক্টে রাখুন
+#### ১.১. বিকল্প ক (TinyMCE-এর মতো সরাসরি গ্লোবাল CDN লিঙ্ক - সবচেয়ে সহজ)
+কোনো ফাইল ডাউনলোড বা কপি না করেই সরাসরি গ্লোবাল CDN ব্যবহার করতে পারেন:
+```html
+<!-- এডিটরের সিএসএস -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/styles.css">
+
+<!-- এডিটরের জাভাস্ক্রিপ্ট (UMD) -->
+<script src="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js"></script>
+```
+
+#### ১.১. বিকল্প খ (লোকাল ফাইল কপি করে রাখা)
 প্রজেক্টের বিল্ট ফাইল থেকে এই দুটি ফাইল কপি করে আপনার ওয়েব ডিরেক্টরিতে রাখুন:
 - `universal-editor.umd.js` (পাথ: `packages/core/dist/universal-editor.umd.js`)
-- `styles.css` (পাথ: `packages/core/src/ui/styles.css`)
+- `styles.css` (পাথ: `packages/core/dist/styles.css`)
 
 #### ১.২. HTML পেজে কোড লিখুন
 ```html
@@ -72,7 +82,7 @@
   <title>আমার এডিটর পেজ</title>
   
   <!-- ১. এডিটরের সিএসএস স্টাইলশিট লিংক করুন -->
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/styles.css">
   <style>
     .editor-wrapper {
       max-width: 900px;
@@ -94,7 +104,7 @@
   <button id="save-btn" style="padding: 10px 20px; margin: 20px auto; display: block;">কন্টেন্ট সংরক্ষণ করুন</button>
 
   <!-- ৩. এডিটরের জাভাস্ক্রিপ্ট ফাইল যুক্ত করুন -->
-  <script src="assets/js/universal-editor.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@shamimsofte/universal-editor-core@latest/dist/universal-editor.umd.js"></script>
 
   <script>
     // ৪. এডিটর ইনিশিয়ালাইজ করুন
@@ -137,7 +147,7 @@
 
 #### ২.১. ইনস্টল করুন
 ```bash
-npm install @universal-editor/vue3 @universal-editor/core
+npm install @shamimsofte/universal-editor-vue3 @shamimsofte/universal-editor-core
 ```
 
 #### ২.২. কম্পোনেন্টে ব্যবহার করুন
@@ -164,8 +174,8 @@ npm install @universal-editor/vue3 @universal-editor/core
 
 <script setup>
 import { ref } from 'vue';
-import { RichTextEditor } from '@universal-editor/vue3';
-import '@universal-editor/vue3/style.css';
+import { RichTextEditor } from '@shamimsofte/universal-editor-vue3';
+import '@shamimsofte/universal-editor-vue3/style.css';
 
 // v-model এর মাধ্যমে রিয়েক্টিভভাবে কন্টেন্ট বাইন্ড হবে
 const postContent = ref('<h1>স্বাগতম!</h1><p>পোস্ট লেখা শুরু করুন।</p>');
@@ -187,7 +197,7 @@ function submitPost() {
 
 #### ৩.১. ইনস্টল করুন
 ```bash
-npm install @universal-editor/vue2 @universal-editor/core
+npm install @shamimsofte/universal-editor-vue2 @shamimsofte/universal-editor-core
 ```
 
 #### ৩.২. কম্পোনেন্টে ব্যবহার করুন
@@ -203,7 +213,7 @@ npm install @universal-editor/vue2 @universal-editor/core
 </template>
 
 <script>
-import { RichTextEditor } from '@universal-editor/vue2';
+import { RichTextEditor } from '@shamimsofte/universal-editor-vue2';
 
 export default {
   components: { RichTextEditor },
@@ -223,7 +233,7 @@ export default {
 
 ```bash
 # কম্পোজার প্যাকেজ ইনস্টল
-composer require vendor/laravel-universal-editor
+composer require shamimsofte/laravel-universal-editor
 
 # কনফিগারেশন ফাইল পাবলিশ (config/editor.php)
 php artisan vendor:publish --tag=editor-config
