@@ -1,0 +1,690 @@
+/* ==========================================================================
+   Universal Rich Text Editor — Phase 15: Read-Only & Viewer Mode Styles
+   ========================================================================== */
+
+:root {
+  --ue-viewer-bg: transparent;
+  --ue-viewer-text: #e2e8f0;
+  --ue-viewer-heading: #f8fafc;
+  --ue-viewer-muted: #94a3b8;
+  --ue-viewer-border: rgba(255, 255, 255, 0.1);
+  --ue-viewer-accent: #38bdf8;
+  --ue-viewer-link: #38bdf8;
+  --ue-viewer-code-bg: #0f172a;
+  --ue-viewer-inline-code-bg: rgba(255, 255, 255, 0.08);
+  --ue-viewer-blockquote-bg: rgba(56, 189, 248, 0.05);
+  --ue-viewer-table-th-bg: rgba(255, 255, 255, 0.05);
+  --ue-viewer-table-tr-alt: rgba(255, 255, 255, 0.02);
+}
+
+/* Light Theme Variables */
+.ue-viewer-light,
+[data-theme='light'] .ue-viewer {
+  --ue-viewer-bg: #ffffff;
+  --ue-viewer-text: #1e293b;
+  --ue-viewer-heading: #0f172a;
+  --ue-viewer-muted: #64748b;
+  --ue-viewer-border: #e2e8f0;
+  --ue-viewer-accent: #0284c7;
+  --ue-viewer-link: #0284c7;
+  --ue-viewer-code-bg: #1e293b;
+  --ue-viewer-inline-code-bg: #f1f5f9;
+  --ue-viewer-blockquote-bg: rgba(2, 132, 199, 0.05);
+  --ue-viewer-table-th-bg: #f8fafc;
+  --ue-viewer-table-tr-alt: #f8fafc;
+}
+
+/* Dark Theme Variables */
+.ue-viewer-dark,
+[data-theme='dark'] .ue-viewer {
+  --ue-viewer-bg: #0b0f19;
+  --ue-viewer-text: #e2e8f0;
+  --ue-viewer-heading: #f8fafc;
+  --ue-viewer-muted: #94a3b8;
+  --ue-viewer-border: rgba(255, 255, 255, 0.1);
+  --ue-viewer-accent: #38bdf8;
+  --ue-viewer-link: #38bdf8;
+  --ue-viewer-code-bg: #0f172a;
+  --ue-viewer-inline-code-bg: rgba(255, 255, 255, 0.08);
+  --ue-viewer-blockquote-bg: rgba(56, 189, 248, 0.05);
+  --ue-viewer-table-th-bg: rgba(255, 255, 255, 0.05);
+  --ue-viewer-table-tr-alt: rgba(255, 255, 255, 0.02);
+}
+
+/* --------------------------------------------------------------------------
+   Core Viewer Typography & Layout
+   -------------------------------------------------------------------------- */
+.ue-viewer {
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--ue-viewer-text);
+  background-color: var(--ue-viewer-bg);
+  font-family: var(--ue-font-family, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  font-size: 1rem;
+  line-height: 1.75;
+  outline: none;
+  user-select: text;
+  word-break: break-word;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.ue-viewer * {
+  box-sizing: border-box;
+}
+
+/* Headings */
+.ue-viewer h1,
+.ue-viewer h2,
+.ue-viewer h3,
+.ue-viewer h4,
+.ue-viewer h5,
+.ue-viewer h6 {
+  color: var(--ue-viewer-heading);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  letter-spacing: -0.02em;
+}
+
+.ue-viewer h1:first-child,
+.ue-viewer h2:first-child,
+.ue-viewer h3:first-child {
+  margin-top: 0;
+}
+
+.ue-viewer h1 {
+  font-size: 2.15rem;
+  border-bottom: 1px solid var(--ue-viewer-border);
+  padding-bottom: 0.4em;
+}
+
+.ue-viewer h2 {
+  font-size: 1.65rem;
+  border-bottom: 1px solid var(--ue-viewer-border);
+  padding-bottom: 0.3em;
+}
+
+.ue-viewer h3 {
+  font-size: 1.35rem;
+}
+
+.ue-viewer h4 {
+  font-size: 1.15rem;
+}
+
+.ue-viewer h5,
+.ue-viewer h6 {
+  font-size: 1rem;
+}
+
+/* Paragraphs & Inlines */
+.ue-viewer p {
+  margin-top: 0;
+  margin-bottom: 1.15em;
+}
+
+.ue-viewer strong,
+.ue-viewer b {
+  font-weight: 700;
+  color: var(--ue-viewer-heading);
+}
+
+.ue-viewer em,
+.ue-viewer i {
+  font-style: italic;
+}
+
+.ue-viewer u {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ue-viewer s,
+.ue-viewer strike,
+.ue-viewer del {
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+
+.ue-viewer hr {
+  height: 1px;
+  border: none;
+  background-color: var(--ue-viewer-border);
+  margin: 2em 0;
+}
+
+/* Links */
+.ue-viewer a,
+.ue-viewer .editor-link {
+  color: var(--ue-viewer-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ue-viewer a:hover,
+.ue-viewer .editor-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Blockquotes */
+.ue-viewer blockquote {
+  margin: 1.5em 0;
+  padding: 1em 1.25em;
+  border-left: 4px solid var(--ue-viewer-accent);
+  background-color: var(--ue-viewer-blockquote-bg);
+  border-radius: 0 8px 8px 0;
+  color: var(--ue-viewer-text);
+  font-style: italic;
+}
+
+.ue-viewer blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline Code */
+.ue-viewer code:not(pre code) {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.88em;
+  padding: 0.2em 0.45em;
+  border-radius: 4px;
+  background-color: var(--ue-viewer-inline-code-bg);
+  color: var(--ue-viewer-accent);
+  border: 1px solid var(--ue-viewer-border);
+}
+
+/* Lists */
+.ue-viewer ul:not([data-type='taskList']),
+.ue-viewer ol {
+  margin: 0.8em 0 1.2em 1.5em;
+  padding: 0;
+}
+
+.ue-viewer li {
+  margin-bottom: 0.35em;
+}
+
+/* Task Lists */
+.ue-viewer ul[data-type='taskList'] {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.8em 0 1.2em 0;
+}
+
+.ue-viewer ul[data-type='taskList'] li[data-type='taskItem'] {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.4em;
+}
+
+.ue-viewer ul[data-type='taskList'] li[data-type='taskItem'] > label {
+  user-select: none;
+  cursor: default;
+  margin-top: 0.3em;
+}
+
+.ue-viewer ul[data-type='taskList'] li[data-type='taskItem'] input[type='checkbox'] {
+  accent-color: #10b981;
+  width: 16px;
+  height: 16px;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ue-viewer ul[data-type='taskList'] li[data-type='taskItem'][data-checked='true'] > div {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+.ue-viewer table,
+.ue-viewer .ue-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.92rem;
+  border: 1px solid var(--ue-viewer-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ue-viewer th,
+.ue-viewer td {
+  padding: 10px 14px;
+  border: 1px solid var(--ue-viewer-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ue-viewer th {
+  background-color: var(--ue-viewer-table-th-bg);
+  color: var(--ue-viewer-heading);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.ue-viewer tr:nth-child(even) td {
+  background-color: var(--ue-viewer-table-tr-alt);
+}
+
+/* --------------------------------------------------------------------------
+   Code Blocks with Terminal Header & Copy Button
+   -------------------------------------------------------------------------- */
+.ue-viewer .ue-code-block-viewer {
+  position: relative;
+  margin: 1.6em 0;
+  border-radius: 8px;
+  background-color: var(--ue-viewer-code-bg);
+  border: 1px solid var(--ue-viewer-border);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ue-viewer .ue-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--ue-viewer-border);
+  font-size: 0.8rem;
+  color: var(--ue-viewer-muted);
+}
+
+.ue-viewer .ue-code-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.ue-viewer .ue-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.ue-viewer .ue-dot-red { background-color: #ef4444; }
+.ue-viewer .ue-dot-yellow { background-color: #eab308; }
+.ue-viewer .ue-dot-green { background-color: #10b981; }
+
+.ue-viewer .ue-code-lang {
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.ue-viewer .ue-code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ue-viewer .ue-code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.ue-viewer .ue-code-copy-btn.copied {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.ue-viewer pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  background-color: transparent;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.ue-viewer pre code {
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Images & Figures
+   -------------------------------------------------------------------------- */
+.ue-viewer .ue-image-figure {
+  margin: 1.8em auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ue-viewer .ue-image-figure.ue-image-align-left {
+  align-items: flex-start;
+  margin-left: 0;
+}
+
+.ue-viewer .ue-image-figure.ue-image-align-center {
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ue-viewer .ue-image-figure.ue-image-align-right {
+  align-items: flex-end;
+  margin-right: 0;
+}
+
+.ue-viewer .ue-image-figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ue-viewer .ue-image-figure img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ue-viewer .ue-image-caption {
+  font-size: 0.85rem;
+  color: var(--ue-viewer-muted);
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   File Attachment Cards
+   -------------------------------------------------------------------------- */
+.ue-viewer .ue-file-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 1.2em 0;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--ue-viewer-border);
+  transition: all 0.2s ease;
+}
+
+.ue-viewer .ue-file-card:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.ue-viewer .ue-file-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--ue-viewer-accent);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.ue-viewer .ue-file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ue-viewer .ue-file-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ue-viewer-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ue-viewer .ue-file-size {
+  font-size: 0.78rem;
+  color: var(--ue-viewer-muted);
+}
+
+.ue-viewer .ue-file-download {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--ue-viewer-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ue-viewer .ue-file-download:hover {
+  background: var(--ue-viewer-accent);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Media Embeds
+   -------------------------------------------------------------------------- */
+.ue-viewer .ue-embed-wrapper {
+  margin: 1.8em auto;
+  width: 100%;
+}
+
+.ue-viewer .ue-embed-responsive {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.ue-viewer .ue-embed-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Mentions
+   -------------------------------------------------------------------------- */
+.ue-viewer .ue-mention {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--ue-viewer-accent);
+  font-weight: 600;
+  font-size: 0.9em;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   Lightbox Modal for Image Zoom
+   -------------------------------------------------------------------------- */
+.ue-viewer-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 24px;
+  animation: ueFadeIn 0.2s ease forwards;
+}
+
+.ue-viewer-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ue-viewer-lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: ueZoomIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ue-viewer-lightbox-caption {
+  margin-top: 12px;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.ue-viewer-lightbox-close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #334155;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.ue-viewer-lightbox-close:hover {
+  background: #ef4444;
+  transform: scale(1.1);
+}
+
+@keyframes ueFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ueZoomIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   Print Mode Optimization (@media print)
+   -------------------------------------------------------------------------- */
+@media print {
+  .ue-viewer {
+    color: #000000 !important;
+    background: transparent !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .ue-viewer h1,
+  .ue-viewer h2,
+  .ue-viewer h3,
+  .ue-viewer h4 {
+    color: #000000 !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .ue-viewer h1 {
+    font-size: 18pt !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+
+  .ue-viewer h2 {
+    font-size: 14pt !important;
+    border-bottom: 1px solid #666666 !important;
+  }
+
+  .ue-viewer a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+  }
+
+  .ue-viewer a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 85%;
+    color: #555555;
+  }
+
+  .ue-viewer blockquote {
+    border-left: 3px solid #000000 !important;
+    background: transparent !important;
+    color: #222222 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .ue-viewer table,
+  .ue-viewer tr,
+  .ue-viewer pre,
+  .ue-viewer .ue-code-block-viewer,
+  .ue-viewer .ue-image-figure,
+  .ue-viewer .ue-embed-wrapper {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-shadow: none !important;
+  }
+
+  .ue-viewer table {
+    border: 1px solid #000000 !important;
+  }
+
+  .ue-viewer th,
+  .ue-viewer td {
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    background: transparent !important;
+  }
+
+  .ue-viewer .ue-code-block-viewer {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+  }
+
+  .ue-viewer .ue-code-header {
+    background: #e2e8f0 !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+  }
+
+  .ue-viewer pre {
+    color: #0f172a !important;
+  }
+
+  /* Hide interactive widgets in print */
+  .ue-viewer .ue-code-copy-btn,
+  .ue-viewer-lightbox {
+    display: none !important;
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "universal-editor-monorepo",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Universal Rich Text Editor — Enterprise Monorepo",
+  "workspaces": [
+    "packages/*",
+    "demo"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=demo",
+    "build": "npm run build --workspaces --if-present && node scripts/emit-types.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "node tests/verify-phase24-e2e.mjs",
+    "test:laravel": "php laravel/tests/FullTestSuiteTest.php",
+    "test:all": "vitest run && php laravel/tests/FullTestSuiteTest.php",
+    "verify:release": "node scripts/verify-release.mjs",
+    "lint": "eslint . --ext .ts,.js,.vue",
+    "format": "prettier --write \"**/*.{ts,js,vue,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,vue,json,md}\""
+  },
+  "keywords": [
+    "rich-text-editor",
+    "tiptap",
+    "prosemirror",
+    "vue",
+    "vanilla-js",
+    "laravel",
+    "wysiwyg"
+  ],
+  "author": "Enterprise Architecture Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/test-utils": "^2.5.1",
+    "eslint": "^8.57.0",
+    "happy-dom": "^14.3.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5",
+    "vitest": "^1.3.1",
+    "vue": "^3.5.43"
+  }
+}

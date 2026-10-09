@@ -1,0 +1,40 @@
+{
+  "name": "@universal-editor/extensions",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Custom and extended extensions for Universal Editor",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "rich-text-editor",
+    "extensions",
+    "tiptap",
+    "prosemirror",
+    "wysiwyg"
+  ],
+  "author": "Enterprise Architecture Team",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tiptap/core": "^2.2.4",
+    "@universal-editor/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@universal-editor/vue3",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Vue 3 adapter and components for Universal Editor",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css",
+    "./dist/style.css"
+  ],
+  "keywords": [
+    "rich-text-editor",
+    "vue3",
+    "tiptap",
+    "prosemirror",
+    "wysiwyg"
+  ],
+  "author": "Enterprise Architecture Team",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "dependencies": {
+    "@universal-editor/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "vue": "^3.4.21"
+  }
+}

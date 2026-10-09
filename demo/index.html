@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Rich Text Editor — Phase 27: Enterprise Documentation &amp; Showcase Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Bengali:wght@400;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="navbar">
+        <div class="brand">
+          <div class="brand-logo">UE</div>
+          <div>
+            <div class="brand-title">Universal Rich Text Editor</div>
+            <div class="brand-subtitle">
+              Enterprise Monorepo — Phase 27: Beautiful Multi-Page Documentation &amp; Interactive Showcase Website
+            </div>
+          </div>
+        </div>
+        <div class="nav-badges">
+          <span class="badge badge-success">● Phase 27: Demo Website</span>
+          <span class="badge badge-neutral">10 Dedicated Pages</span>
+          <span class="badge badge-accent">11 Interactive Showcases</span>
+        </div>
+      </header>
+
+      <!-- Main Layout -->
+      <main class="container">
+        <!-- View Switcher -->
+        <div
+          class="card"
+          style="padding: 0.75rem 1.25rem; display: flex; gap: 0.75rem; align-items: center"
+        >
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted)"
+            >View Mode:</span
+          >
+          <button id="showVue3View" class="btn btn-primary">
+            Vue 3 Component (&lt;RichTextEditor /&gt;)
+          </button>
+          <button id="showVanillaView" class="btn btn-secondary">Vanilla Core API View</button>
+        </div>
+
+        <!-- Vue 3 Section -->
+        <div id="vue3-section">
+          <div id="vue-app"></div>
+        </div>
+
+        <!-- Vanilla Section -->
+        <div id="vanilla-section" style="display: none; flex-direction: column; gap: 1.5rem">
+          <section class="card controls-card">
+            <div class="card-header">
+              <h3>Toolbar Configuration & Presets</h3>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div id="autosaveIndicatorContainer"></div>
+                <span class="status-indicator" id="editorStatus">Status: Ready</span>
+              </div>
+            </div>
+            <div class="button-bar">
+              <button id="presetFull" class="btn btn-primary">Full Toolbar Preset</button>
+              <button id="presetStandard" class="btn btn-secondary">Standard Preset</button>
+              <button id="presetMinimal" class="btn btn-secondary">Minimal Preset</button>
+              <button id="btnSetSample" class="btn btn-secondary">Reload Sample Content</button>
+              <button id="btnSetWordLimit" class="btn btn-secondary" style="border-color: rgba(245, 158, 11, 0.4); color: #fbbf24;">📏 Word Limit: 50</button>
+              <button id="btnSetCharLimit" class="btn btn-secondary" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8;">📏 Char Limit: 300</button>
+              <button id="btnToggleHardLimit" class="btn btn-secondary" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">🚫 Hard Limit: Off</button>
+              <button id="btnResetLimits" class="btn btn-secondary">🔄 Unlimited</button>
+              <button id="btnManualSave" class="btn btn-secondary" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399;">💾 Save Draft (Ctrl+S)</button>
+              <button id="btnRestoreDraft" class="btn btn-secondary" style="border-color: rgba(99, 102, 241, 0.4); color: #a5b4fc;">🔄 Restore Draft</button>
+              <button id="btnClearDraft" class="btn btn-secondary" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">🗑️ Clear Draft</button>
+              <button id="btnCreateSnapshot" class="btn btn-secondary" style="border-color: rgba(52, 211, 153, 0.4); color: #34d399;">📸 Take Snapshot</button>
+              <button id="btnVersionHistory" class="btn btn-secondary" style="border-color: rgba(99, 102, 241, 0.4); color: #a5b4fc;">🕒 Version Diff</button>
+              <button id="btnInsertMention" class="btn btn-secondary" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8;">@ Insert Mention</button>
+              <button id="btnInsertYouTube" class="btn btn-secondary" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">▶️ Insert YouTube</button>
+              <button id="btnSetMultilingual" class="btn btn-secondary" style="border-color: rgba(99, 102, 241, 0.4); color: #818cf8;">🌐 Multilingual</button>
+              <button id="btnClear" class="btn btn-danger">Clear Content</button>
+              <button id="btnToggleEditable" class="btn btn-secondary">Toggle Read-Only</button>
+              <button id="btnInjectXss" class="btn btn-warning" style="background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15;">🛡️ Test XSS Payload</button>
+            </div>
+          </section>
+
+          <!-- Editor & Inspector Grid -->
+          <div class="editor-grid">
+            <!-- Editor Column -->
+            <section class="card editor-card">
+              <div class="card-header">
+                <h3>Universal Editor Surface</h3>
+                <div class="stats-badge" id="statsBadge">0 characters</div>
+              </div>
+              <div class="editor-wrapper">
+                <div id="editor-container" class="prose-content"></div>
+              </div>
+            </section>
+
+            <!-- Inspector Tabs Column -->
+            <section class="card inspector-card">
+              <div class="card-header tab-header">
+                <div class="tabs">
+                  <button class="tab-btn active" data-tab="tab-html">HTML (getHTML)</button>
+                  <button class="tab-btn" data-tab="tab-diff">🕒 Version Diff (LCS)</button>
+                  <button class="tab-btn" data-tab="tab-sanitized">🛡️ Sanitized (getSanitizedHTML)</button>
+                  <button class="tab-btn" data-tab="tab-json">JSON (getJSON)</button>
+                  <button class="tab-btn" data-tab="tab-text">Text (getText)</button>
+                  <button class="tab-btn" data-tab="tab-events">Event Log</button>
+                </div>
+                <button id="btnClearEvents" class="btn btn-sm btn-ghost" title="Clear event log">
+                  Clear Log
+                </button>
+              </div>
+              <div class="tab-body">
+                <div id="tab-html" class="tab-pane active">
+                  <pre><code id="outputHtml"></code></pre>
+                </div>
+                <div id="tab-diff" class="tab-pane">
+                  <div id="diffSummaryBadge" style="margin-bottom: 8px; font-size: 0.8rem; display: flex; gap: 8px;"></div>
+                  <div id="outputDiff" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; font-size: 0.9rem; line-height: 1.6;"></div>
+                </div>
+                <div id="tab-sanitized" class="tab-pane">
+                  <pre><code id="outputSanitized" style="color: #4ade80;"></code></pre>
+                </div>
+                <div id="tab-json" class="tab-pane">
+                  <pre><code id="outputJson"></code></pre>
+                </div>
+                <div id="tab-text" class="tab-pane">
+                  <pre><code id="outputText"></code></pre>
+                </div>
+                <div id="tab-events" class="tab-pane">
+                  <div id="eventLogList" class="event-log-list"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

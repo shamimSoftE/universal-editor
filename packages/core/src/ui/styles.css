@@ -1,0 +1,2603 @@
+@import '../styles/viewer.css';
+
+/* Universal Editor — Core UI Design System */
+
+:root {
+  /* Phase 22 Design Tokens & CSS Variables */
+  --editor-bg: #0f172a;
+  --editor-text: #f8fafc;
+  --editor-border: rgba(255, 255, 255, 0.12);
+  --editor-toolbar-bg: #1e293b;
+  --editor-toolbar-height: 44px;
+  --editor-button-hover: rgba(255, 255, 255, 0.08);
+  --editor-button-active: rgba(99, 102, 241, 0.25);
+  --editor-placeholder: #64748b;
+  --editor-radius: 8px;
+  --editor-font-family: var(--font-sans, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif);
+  --editor-font-size: 15px;
+  --editor-button-size: 32px;
+  --editor-active-color: #818cf8;
+  --editor-accent-color: #a855f7;
+
+  /* Legacy & Internal fallbacks */
+  --ue-bg: var(--editor-bg);
+  --ue-toolbar-bg: var(--editor-toolbar-bg);
+  --ue-toolbar-border: var(--editor-border);
+  --ue-btn-color: var(--editor-text);
+  --ue-btn-hover-color: #ffffff;
+  --ue-btn-hover-bg: var(--editor-button-hover);
+  --ue-btn-active-color: var(--editor-active-color);
+  --ue-btn-active-bg: var(--editor-button-active);
+  --ue-btn-active-border: var(--editor-active-color);
+  --ue-accent: var(--editor-active-color);
+  --ue-accent-hover: var(--editor-accent-color);
+  --ue-radius: var(--editor-radius);
+  --ue-radius-sm: calc(var(--editor-radius) - 2px);
+  --ue-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --ue-font-sans: var(--editor-font-family);
+}
+
+/* Toolbar Container */
+.ue-toolbar {
+  --ue-btn-color: var(--editor-text, #f8fafc);
+  --ue-btn-hover-bg: var(--editor-button-hover, rgba(255, 255, 255, 0.08));
+  --ue-btn-active-bg: var(--editor-button-active, rgba(99, 102, 241, 0.25));
+  --ue-btn-active-color: var(--editor-active-color, #818cf8);
+  --ue-btn-active-border: var(--editor-active-color, #818cf8);
+  --ue-toolbar-border: var(--editor-border, rgba(255, 255, 255, 0.12));
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 12px;
+  min-height: var(--editor-toolbar-height, 44px);
+  background: var(--editor-toolbar-bg, var(--ue-toolbar-bg));
+  border-bottom: 1px solid var(--editor-border, var(--ue-toolbar-border));
+  border-top-left-radius: var(--editor-radius, var(--ue-radius));
+  border-top-right-radius: var(--editor-radius, var(--ue-radius));
+  user-select: none;
+  font-family: var(--editor-font-family, var(--ue-font-sans));
+  color: var(--editor-text, #f8fafc);
+}
+
+/* Toolbar Button */
+.ue-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: var(--editor-button-size, 32px);
+  height: var(--editor-button-size, 32px);
+  padding: 0 6px;
+  background: transparent;
+  color: var(--editor-text, var(--ue-btn-color));
+  border: 1px solid transparent;
+  border-radius: var(--ue-radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.ue-toolbar-btn:hover:not(:disabled) {
+  background: var(--editor-button-hover, var(--ue-btn-hover-bg));
+  color: var(--editor-active-color, var(--ue-btn-hover-color));
+}
+
+.ue-toolbar-btn.is-active {
+  background: var(--editor-button-active, var(--ue-btn-active-bg));
+  color: var(--editor-active-color, var(--ue-btn-active-color));
+  border-color: var(--editor-active-color, var(--ue-btn-active-border));
+}
+
+.ue-toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ue-toolbar-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Divider */
+.ue-toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--editor-border, var(--ue-toolbar-border));
+  margin: 0 4px;
+}
+
+/* Dropdown */
+.ue-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.ue-dropdown-btn {
+  padding: 0 8px;
+  gap: 4px;
+  color: var(--editor-text, var(--ue-btn-color));
+}
+
+.ue-dropdown-btn .chevron {
+  transition: transform 0.2s ease;
+}
+
+.ue-dropdown.is-open .ue-dropdown-btn .chevron {
+  transform: rotate(180deg);
+}
+
+.ue-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  min-width: 140px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ue-radius-sm);
+  box-shadow: var(--ue-shadow);
+  padding: 4px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ue-dropdown.is-open .ue-dropdown-menu {
+  display: flex;
+}
+
+.ue-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: transparent;
+  color: #cbd5e1;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.ue-dropdown-item:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #fff;
+}
+
+.ue-dropdown-item.is-active {
+  background: rgba(99, 102, 241, 0.25);
+  color: #818cf8;
+  font-weight: 600;
+}
+
+/* Bubble Menu */
+.ue-bubble-menu {
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--ue-radius-sm);
+  padding: 4px;
+  box-shadow: var(--ue-shadow);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.ue-bubble-menu.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.ue-bubble-menu .ue-toolbar-btn {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 4px;
+}
+
+/* Link Dialog */
+.ue-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.ue-dialog-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ue-dialog {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--ue-radius);
+  width: 90%;
+  max-width: 440px;
+  padding: 20px;
+  box-shadow: var(--ue-shadow);
+  transform: scale(0.95);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #f8fafc;
+  font-family: var(--ue-font-sans);
+}
+
+.ue-dialog-overlay.is-open .ue-dialog {
+  transform: scale(1);
+}
+
+.ue-dialog-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ue-form-group {
+  margin-bottom: 14px;
+}
+
+.ue-form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ue-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--ue-radius-sm);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.ue-input:focus {
+  border-color: var(--ue-accent);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+}
+
+.ue-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.ue-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ue-btn {
+  padding: 7px 14px;
+  border-radius: var(--ue-radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.ue-btn-primary {
+  background: var(--ue-accent);
+  color: #fff;
+}
+
+.ue-btn-primary:hover {
+  background: var(--ue-accent-hover);
+}
+
+.ue-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.ue-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.ue-btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+  margin-right: auto;
+}
+
+.ue-btn-danger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Task List Editor Styling */
+ul[data-type='taskList'] {
+  list-style: none;
+  padding: 0;
+  margin: 1em 0;
+}
+
+ul[data-type='taskList'] li[data-type='taskItem'] {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.4em;
+}
+
+ul[data-type='taskList'] li[data-type='taskItem'] > label {
+  margin-right: 0.6em;
+  user-select: none;
+}
+
+ul[data-type='taskList'] li[data-type='taskItem'] > label input[type='checkbox'] {
+  cursor: pointer;
+  accent-color: var(--ue-accent);
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+}
+
+ul[data-type='taskList'] li[data-type='taskItem'] > div {
+  flex: 1;
+}
+
+ul[data-type='taskList'] li[data-type='taskItem'][data-checked='true'] > div {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Editor link styles */
+.editor-link,
+.ProseMirror a {
+  color: #38bdf8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.editor-link:hover,
+.ProseMirror a:hover {
+  color: #7dd3fc;
+}
+
+/* Image & Media Styling */
+.ue-image-figure {
+  margin: 1.5em 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ue-image-figure.ue-image-align-center {
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+.ue-image-figure.ue-image-align-left {
+  margin-right: auto;
+  align-items: flex-start;
+}
+
+.ue-image-figure.ue-image-align-right {
+  margin-left: auto;
+  align-items: flex-end;
+}
+
+.ue-image-figure img {
+  border-radius: var(--ue-radius, 8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.ue-image-caption {
+  font-size: 0.85em;
+  color: #94a3b8;
+  margin-top: 6px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* File Attachment Card */
+.ue-file-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ue-radius, 8px);
+  margin: 1em 0;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ue-file-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
+}
+
+.ue-file-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ue-radius-sm, 6px);
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ue-file-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ue-file-name {
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ue-file-size {
+  font-size: 0.78em;
+  color: #94a3b8;
+  font-family: var(--font-mono, monospace);
+}
+
+.ue-file-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+  border-radius: var(--ue-radius-sm, 6px);
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ue-file-download:hover {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+/* Dropzone & Upload Progress */
+.ue-dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--ue-radius, 8px);
+  padding: 24px 16px;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ue-dropzone:hover,
+.ue-dropzone.is-dragover {
+  border-color: var(--ue-accent, #6366f1);
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.ue-dropzone-icon {
+  color: #94a3b8;
+}
+
+.ue-dropzone-text {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.ue-dropzone-hint {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.ue-progress-container {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ue-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.ue-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
+  transition: width 0.15s ease;
+}
+
+.ue-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* --- Phase 7 Advanced Formatting Styles --- */
+
+/* Color Picker Button & Indicator */
+.ue-color-btn {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  gap: 2px;
+}
+
+.ue-color-indicator {
+  display: block;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #3b82f6;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ue-color-menu {
+  padding: 10px;
+  min-width: 170px;
+}
+
+.ue-color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.ue-color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  padding: 0;
+  outline: none;
+}
+
+.ue-color-swatch:hover {
+  transform: scale(1.15);
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.ue-color-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ue-custom-color-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.ue-custom-color-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ue-custom-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.ue-custom-color-input::-webkit-color-swatch {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.ue-color-clear-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.ue-color-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+/* Text Direction (RTL / LTR) */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Typography Enhancements for Sub/Superscript */
+sub {
+  vertical-align: sub;
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+sup {
+  vertical-align: super;
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+/* ==========================================================================
+   Phase 8: Table Components, Responsiveness & Visual Design System
+   ========================================================================== */
+
+/* Responsive Table Wrapper (Horizontal scrolling for mobile / constrained viewports) */
+.tableWrapper {
+  overflow-x: auto;
+  margin: 1.5em 0;
+  max-width: 100%;
+  border-radius: var(--ue-radius);
+  border: 1px solid var(--ue-toolbar-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+/* Editor Table Elements */
+.ProseMirror table.ue-table,
+.ue-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.ProseMirror table.ue-table td,
+.ProseMirror table.ue-table th,
+.ue-table td,
+.ue-table th {
+  min-width: 80px;
+  padding: 10px 14px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ProseMirror table.ue-table th,
+.ue-table th {
+  font-weight: 600;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.ProseMirror table.ue-table td,
+.ue-table td {
+  background: transparent;
+  color: #e2e8f0;
+}
+
+/* Selected Cells (Multi-cell drag selection) */
+.ProseMirror table.ue-table .selectedCell:after,
+.ue-table .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(99, 102, 241, 0.18);
+  pointer-events: none;
+  border: 1.5px solid #6366f1;
+}
+
+/* Column Resize Handle */
+.ProseMirror table.ue-table .column-resize-handle,
+.ue-table .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: var(--ue-accent);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.ProseMirror.resize-cursor {
+  cursor: col-resize;
+}
+
+/* Interactive Table Dialog Matrix Grid */
+.ue-table-grid-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--ue-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ue-table-grid-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a5b4fc;
+}
+
+.ue-table-grid-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ue-grid-row {
+  display: flex;
+  gap: 3px;
+}
+
+.ue-grid-cell {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.ue-grid-cell.active {
+  background: rgba(99, 102, 241, 0.4);
+  border-color: #6366f1;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
+}
+
+/* Floating Table Toolbar */
+.ue-table-toolbar {
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--ue-radius-sm);
+  box-shadow: var(--ue-shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  pointer-events: none;
+}
+
+.ue-table-toolbar.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ue-table-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  color: var(--ue-btn-color);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.12s ease;
+}
+
+.ue-table-toolbar-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.ue-table-toolbar-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ue-table-toolbar-btn.active {
+  background: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.ue-btn-danger-icon:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+}
+
+/* Context Menu */
+.ue-context-menu {
+  position: absolute;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  min-width: 210px;
+  padding: 6px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--ue-radius);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+  transform-origin: top left;
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ue-context-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.ue-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  color: #cbd5e1;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.ue-context-menu-item:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+.ue-context-menu-item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ue-context-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+.ue-context-menu-item:hover:not(:disabled) .ue-context-menu-icon {
+  color: #6366f1;
+}
+
+.ue-context-menu-text {
+  flex: 1;
+}
+
+.ue-context-menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 6px;
+}
+
+.ue-context-menu-danger {
+  color: #f87171;
+}
+
+.ue-context-menu-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #fca5a5 !important;
+}
+
+.ue-context-menu-danger .ue-context-menu-icon {
+  color: #f87171;
+}
+
+/* ==========================================================================
+   Phase 9: Code Blocks & Syntax Highlighting (Developer Features)
+   ========================================================================== */
+
+/* Code Block Outer Container */
+.ue-code-block-container {
+  margin: 1.5em 0;
+  border-radius: var(--ue-radius);
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Code Block Header Window Bar */
+.ue-code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  user-select: none;
+}
+
+.ue-code-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Terminal Window Dots */
+.ue-code-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.ue-code-block-container:hover .ue-dot {
+  opacity: 1;
+}
+
+.ue-dot-red {
+  background: #ff5f56;
+  box-shadow: 0 0 6px rgba(255, 95, 86, 0.4);
+}
+
+.ue-dot-yellow {
+  background: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.4);
+}
+
+.ue-dot-green {
+  background: #27c93f;
+  box-shadow: 0 0 6px rgba(39, 201, 63, 0.4);
+}
+
+/* Language Selector Dropdown */
+.ue-code-lang-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.ue-code-lang-select:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ue-code-lang-select:focus {
+  border-color: var(--ue-accent);
+  color: #ffffff;
+}
+
+.ue-code-lang-select option {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+/* Copy Code Button */
+.ue-code-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ue-code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: var(--ue-font-sans);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.ue-code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ue-code-copy-btn.copied {
+  color: #34d399 !important;
+  background: rgba(52, 211, 153, 0.15) !important;
+  border-color: rgba(52, 211, 153, 0.4) !important;
+}
+
+.ue-copy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ue-copy-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Code Pre and Highlighting */
+.ue-code-pre {
+  margin: 0;
+  padding: 16px 18px;
+  background: transparent;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+.ue-code-pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ue-code-pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.ue-code-pre code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: #e6edf3;
+  font-size: 13.5px;
+  line-height: 1.65;
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: pre;
+}
+
+/* ==========================================================================
+   Highlight.js Clean Enterprise Dark Theme
+   ========================================================================== */
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #ff7b72;
+  font-weight: 600;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #a5d6ff;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.hljs-name,
+.hljs-tag {
+  color: #7ee787;
+}
+
+.hljs-number,
+.hljs-variable,
+.hljs-link {
+  color: #79c0ff;
+}
+
+.hljs-function {
+  color: #d2a8ff;
+}
+
+.hljs-built_in,
+.hljs-symbol,
+.hljs-bullet {
+  color: #ffa657;
+}
+
+.hljs-params {
+  color: #c9d1d9;
+}
+
+.hljs-punctuation,
+.hljs-operator {
+  color: #e6edf3;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* ==========================================================================
+   Phase 10: Media Embeds (YouTube, Vimeo, Google Maps, HTML5 Video, Iframes)
+   ========================================================================== */
+
+.ue-embed-wrapper {
+  margin: 1.5rem auto;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--ue-toolbar-border);
+  background: #0f172a;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.ue-embed-wrapper:hover,
+.ue-embed-wrapper.ProseMirror-selectednode {
+  border-color: var(--ue-primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+}
+
+.ue-embed-align-left {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.ue-embed-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ue-embed-align-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.ue-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ue-embed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.02em;
+}
+
+.ue-embed-badge-icon,
+.ue-badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #818cf8;
+}
+
+.ue-embed-badge-icon svg,
+.ue-badge-icon svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.ue-embed-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-embed-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.ue-embed-action-btn:hover {
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ue-embed-action-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.ue-embed-delete-btn:hover {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.ue-embed-frame-box,
+.ue-embed-responsive {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #090d16;
+  overflow: hidden;
+}
+
+.ue-embed-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.ue-embed-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  display: block;
+}
+
+/* Embed Dialog Specific Styles */
+.ue-embed-dialog {
+  border-radius: 12px;
+}
+
+.ue-embed-detection-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  transition: all 0.2s ease;
+}
+
+.ue-embed-detection-badge.valid {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.ue-embed-detection-badge strong {
+  font-weight: 600;
+  color: inherit;
+}
+
+.ue-dialog-error {
+  font-size: 11.5px;
+  color: #f87171;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* ==========================================================================
+   Phase 11: Notion-Style Slash Commands Menu
+   ========================================================================== */
+
+.ue-slash-menu {
+  position: fixed;
+  z-index: 99999;
+  width: 320px;
+  max-height: 380px;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px -4px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  animation: ue-slash-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ue-slash-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ue-slash-header {
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ue-slash-header-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-slash-header-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.25);
+  color: #818cf8;
+  font-family: var(--ue-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ue-slash-header-hint {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.ue-slash-list {
+  padding: 6px;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.ue-slash-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.ue-slash-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ue-slash-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.ue-slash-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.ue-slash-group-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  padding: 6px 10px 3px;
+  margin-top: 4px;
+}
+
+.ue-slash-group-title:first-child {
+  margin-top: 0;
+}
+
+.ue-slash-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.1s ease;
+  margin-bottom: 2px;
+}
+
+.ue-slash-item:hover,
+.ue-slash-item.is-selected {
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.ue-slash-item.is-selected {
+  outline: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.ue-slash-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+}
+
+.ue-slash-item-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.ue-slash-item.is-selected .ue-slash-item-icon,
+.ue-slash-item:hover .ue-slash-item-icon {
+  background: rgba(99, 102, 241, 0.3);
+  color: #c7d2fe;
+}
+
+.ue-slash-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ue-slash-item-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f1f5f9;
+  line-height: 1.25;
+}
+
+.ue-slash-item-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.ue-slash-item-badge {
+  font-size: 10.5px;
+  font-family: var(--ue-font-mono, monospace);
+  color: #64748b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+}
+
+.ue-slash-item.is-selected .ue-slash-item-badge,
+.ue-slash-item:hover .ue-slash-item-badge {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.25);
+}
+
+.ue-slash-empty {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Phase 12: Mentions System (@ User Mention Chips & Autocomplete Popover)
+   ========================================================================== */
+
+/* Inline Mention Chip in Document */
+.ue-mention,
+.ProseMirror span[data-type="mention"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  margin: 0 2px;
+  border-radius: 9999px;
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #818cf8;
+  font-weight: 500;
+  font-size: 0.92em;
+  line-height: 1.4;
+  vertical-align: baseline;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: all;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: all 0.15s ease;
+}
+
+.ue-mention:hover,
+.ProseMirror span[data-type="mention"]:hover {
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(99, 102, 241, 0.6);
+  color: #a5b4fc;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.35);
+}
+
+/* Floating Mention Dropdown List */
+.ue-mention-list {
+  position: fixed;
+  z-index: 99999;
+  width: 290px;
+  max-height: 360px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 32px -4px rgba(0, 0, 0, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  animation: ue-mention-fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ue-mention-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ue-mention-header {
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ue-mention-header-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-mention-header-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.25);
+  color: #818cf8;
+  font-family: var(--ue-font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ue-mention-header-hint {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.ue-mention-items {
+  padding: 6px;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.ue-mention-items::-webkit-scrollbar {
+  width: 5px;
+}
+
+.ue-mention-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.ue-mention-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  margin-bottom: 2px;
+}
+
+.ue-mention-item:hover,
+.ue-mention-item.is-selected {
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.ue-mention-item.is-selected {
+  outline: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.ue-mention-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ue-mention-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ue-mention-avatar-fallback {
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ue-mention-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ue-mention-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-mention-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ue-mention-badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.22);
+  color: #a5b4fc;
+}
+
+.ue-mention-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.ue-mention-username {
+  color: #818cf8;
+  font-weight: 500;
+}
+
+.ue-mention-role {
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ue-mention-empty {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Phase 13: Autosave & Draft System Styles
+   ========================================================================== */
+
+.ue-autosave-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  user-select: none;
+}
+
+.ue-autosave-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ue-autosave-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Saved state */
+.ue-autosave-status-saved {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+/* Saving state */
+.ue-autosave-status-saving {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.2);
+}
+
+.ue-autosave-spin {
+  animation: ue-spin 1s linear infinite;
+}
+
+@keyframes ue-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Unsaved state */
+.ue-autosave-status-unsaved {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.ue-autosave-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ue-autosave-dot-unsaved {
+  background-color: #fbbf24;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6);
+}
+
+/* Error state */
+.ue-autosave-status-error {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.ue-autosave-retry {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: all 0.15s ease;
+}
+
+.ue-autosave-retry:hover {
+  background: rgba(239, 68, 68, 0.35);
+  color: #fff;
+}
+
+/* Draft detected notification banner */
+.ue-draft-prompt {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  animation: ue-fade-in 0.2s ease-out;
+}
+
+.ue-draft-prompt-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.ue-draft-prompt-text {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.ue-draft-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ue-draft-restore-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.ue-draft-restore-btn:hover {
+  background: #4f46e5;
+}
+
+.ue-draft-discard-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ue-draft-discard-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+/* --- Phase 19 Document Version History & Diff Engine Styles --- */
+
+ins.ue-diff-ins,
+.ue-diff-ins {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  text-decoration: underline;
+  text-decoration-color: #22c55e;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+del.ue-diff-del,
+.ue-diff-del {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.ue-version-history-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.ue-version-history-container {
+  width: 900px;
+  max-width: 95vw;
+  height: 80vh;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.ue-version-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ue-version-body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+.ue-version-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ue-version-item {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ue-version-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.ue-version-item.active {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: #6366f1;
+}
+
+.ue-version-preview {
+  padding: 20px;
+  overflow-y: auto;
+  background: #0f172a;
+}
+
+/* ==========================================================================
+   Phase 20: Collaboration, Cursors, Comments & Document Locking
+   ========================================================================== */
+
+/* Collaboration Bar */
+.ue-collab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  gap: 12px;
+  user-select: none;
+}
+
+.ue-collab-users {
+  display: flex;
+  align-items: center;
+}
+
+.ue-collab-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  cursor: pointer;
+  margin-left: -6px;
+  transition: transform 0.15s ease, z-index 0.15s ease;
+}
+
+.ue-collab-avatar:first-child {
+  margin-left: 0;
+}
+
+.ue-collab-avatar:hover {
+  transform: translateY(-2px) scale(1.1);
+  z-index: 10;
+}
+
+.ue-collab-avatar-status {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 1.5px solid #0f172a;
+}
+
+.ue-collab-avatar-status.is-editing {
+  background: #f59e0b;
+}
+
+/* Remote Cursor and Caret */
+.ue-collab-cursor {
+  position: relative;
+  pointer-events: none;
+}
+
+.ue-collab-cursor-caret {
+  position: absolute;
+  width: 2px;
+  height: 1.2em;
+  background-color: var(--collab-color, #3b82f6);
+  pointer-events: none;
+}
+
+.ue-collab-cursor-label {
+  position: absolute;
+  top: -1.5em;
+  left: 0;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  color: #fff;
+  background-color: var(--collab-color, #3b82f6);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Inline Comment Anchor Highlight */
+.ue-comment-highlight {
+  background: rgba(245, 158, 11, 0.25);
+  border-bottom: 2px solid #f59e0b;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-radius: 2px;
+  padding: 1px 2px;
+}
+
+.ue-comment-highlight:hover,
+.ue-comment-highlight.is-active {
+  background: rgba(245, 158, 11, 0.45);
+}
+
+.ue-comment-highlight.is-resolved {
+  background: transparent;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  opacity: 0.8;
+}
+
+/* Document Lock Banner */
+.ue-lock-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+.ue-lock-banner.is-owner {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.1) 100%);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}
+
+/* Comments Sidebar Container */
+.ue-comment-sidebar {
+  width: 320px;
+  background: #0f172a;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 13px;
+  color: #f8fafc;
+}
+
+.ue-comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ue-comment-card {
+  padding: 12px;
+  margin: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.ue-comment-card:hover,
+.ue-comment-card.is-active {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.ue-comment-quote {
+  border-left: 2px solid #f59e0b;
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.ue-comment-replies {
+  margin-top: 8px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Phase 21: AI Assistant Integration (Toolbar, Dialog, Shimmer, Preview)
+   ========================================================================== */
+
+/* AI Sparkle Button */
+.ue-ai-btn {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #e9d5ff;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ue-ai-btn:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(236, 72, 153, 0.4) 100%);
+  border-color: #c084fc;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+}
+
+/* AI Assistant Modal / Dialog */
+.ue-ai-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.ue-ai-modal {
+  background: #0f172a;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(168, 85, 247, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #f8fafc;
+  animation: ue-modal-fade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ue-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+}
+
+.ue-ai-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #f1f5f9;
+}
+
+.ue-ai-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.ue-ai-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.ue-ai-action-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.ue-ai-action-card:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+.ue-ai-action-card.active {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #a855f7;
+}
+
+.ue-ai-action-icon {
+  font-size: 18px;
+}
+
+.ue-ai-action-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ue-ai-action-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #f8fafc;
+}
+
+.ue-ai-action-desc {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.ue-ai-shimmer {
+  height: 60px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(168, 85, 247, 0.15) 50%, rgba(255, 255, 255, 0.03) 75%);
+  background-size: 200% 100%;
+  animation: ue-ai-shimmer-anim 1.5s infinite;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c084fc;
+  font-size: 13px;
+  gap: 8px;
+}
+
+@keyframes ue-ai-shimmer-anim {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.ue-ai-preview-box {
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.ue-ai-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   Phase 23: Accessibility (WCAG 2.1 AA/AAA) & Mobile Optimization
+   ========================================================================== */
+
+/* Screen reader only utility (WCAG 2.1 live region / announcer) */
+.ue-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* High-contrast visible focus rings (:focus-visible) */
+.ue-toolbar-btn:focus-visible,
+.ue-dropdown-btn:focus-visible,
+.ue-dropdown-trigger:focus-visible,
+.ue-modal-btn:focus-visible,
+.ue-input:focus-visible,
+.ue-btn:focus-visible,
+.ue-theme-card:focus-visible {
+  outline: 2px solid var(--ue-primary, #6366f1) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3) !important;
+  z-index: 10;
+}
+
+/* High contrast mode / prefers-contrast support */
+@media (prefers-contrast: more) {
+  .ue-toolbar-btn:focus-visible,
+  .ue-dropdown-btn:focus-visible,
+  .ue-btn:focus-visible {
+    outline: 3px solid #ffffff !important;
+    outline-offset: 3px !important;
+  }
+}
+
+/* Scrollable Toolbar for Responsive & Mobile Viewports */
+.ue-toolbar-scrollable {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  flex-wrap: nowrap !important;
+  padding: 6px 8px;
+  touch-action: pan-x;
+}
+
+.ue-toolbar-scrollable::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Touch Device Target Sizing (WCAG 2.5.5 / 2.5.8 min 44x44px touch targets) */
+.ue-touch-device .ue-toolbar-btn,
+.ue-mobile-view .ue-toolbar-btn,
+.ue-touch-device .ue-dropdown-btn,
+.ue-mobile-view .ue-dropdown-btn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  touch-action: manipulation;
+}
+
+.ue-touch-device .ue-dropdown-trigger,
+.ue-mobile-view .ue-dropdown-trigger {
+  min-height: 44px;
+  padding: 8px 12px;
+}
+
+/* Mobile Viewport adaptations (< 768px) */
+.ue-mobile-view {
+  font-size: 16px; /* Prevents auto-zoom on iOS Safari when tapping inputs */
+}
+
+.ue-mobile-view .ue-content {
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+/* Mobile Bottom Sheet Toolbar Mode */
+.ue-bottom-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.ue-bottom-sheet .ue-toolbar {
+  order: 2; /* Move toolbar below content on mobile bottom sheet */
+  border-top: 1px solid var(--editor-border, var(--ue-toolbar-border));
+  border-bottom: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  background: var(--editor-toolbar-bg, rgba(15, 23, 42, 0.95));
+}
+
+.ue-bottom-sheet .ue-editor-content,
+.ue-bottom-sheet .ue-content {
+  order: 1;
+}
+
+/* Virtual Keyboard Open state adjustment */
+.ue-vk-open .ue-toolbar {
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Reduced Motion preferences (WCAG 2.1) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+
+
+
+
+
