@@ -1,7 +1,7 @@
 {
-  "name": "vendor/laravel-universal-editor",
+  "name": "shamimsofte/laravel-universal-editor",
   "version": "1.0.0",
-  "description": "Laravel integration package for Universal Rich Text Editor",
+  "description": "Enterprise Laravel integration package for Universal Rich Text Editor",
   "keywords": [
     "laravel",
     "rich-text-editor",
@@ -14,7 +14,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Enterprise Architecture Team"
+      "name": "shamimSoftE",
+      "email": "shamim.softe@gmail.com"
     }
   ],
   "require": {
