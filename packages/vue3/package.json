@@ -1,6 +1,6 @@
 {
   "name": "@shamimsofte/universal-editor-vue3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Vue 3 adapter and components for Universal Editor",
   "main": "./dist/index.cjs",
@@ -15,8 +15,15 @@
     "./style.css": "./dist/style.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamimSoftE/universal-editor.git",
+    "directory": "packages/vue3"
+  },
+  "homepage": "https://github.com/shamimSoftE/universal-editor#readme",
   "sideEffects": [
     "*.css",
     "./dist/style.css"
@@ -38,7 +45,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@shamimsofte/universal-editor-core": "^1.0.0"
+    "@shamimsofte/universal-editor-core": "^1.0.1"
   },
   "devDependencies": {
     "vue": "^3.4.21"

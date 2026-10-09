@@ -1,6 +1,6 @@
 {
   "name": "@shamimsofte/universal-editor-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Shared utilities for Universal Editor",
   "main": "./dist/index.cjs",
@@ -14,8 +14,15 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamimSoftE/universal-editor.git",
+    "directory": "packages/utils"
+  },
+  "homepage": "https://github.com/shamimSoftE/universal-editor#readme",
   "sideEffects": false,
   "author": "shamimSoftE",
   "license": "MIT",

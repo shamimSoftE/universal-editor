@@ -1,6 +1,6 @@
 {
   "name": "@shamimsofte/universal-editor-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Framework-independent core engine for Universal Editor",
   "main": "./dist/universal-editor.umd.js",
@@ -18,8 +18,15 @@
   },
   "files": [
     "dist",
-    "src/ui/styles.css"
+    "src/ui/styles.css",
+    "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamimSoftE/universal-editor.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/shamimSoftE/universal-editor#readme",
   "sideEffects": [
     "*.css",
     "./src/ui/styles.css"
@@ -63,7 +70,7 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
     "@tiptap/suggestion": "^2.2.4",
-    "@shamimsofte/universal-editor-utils": "^1.0.0",
+    "@shamimsofte/universal-editor-utils": "^1.0.1",
     "lowlight": "^2.9.0"
   },
   "devDependencies": {
