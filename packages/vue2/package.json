@@ -1,5 +1,5 @@
 {
-  "name": "@universal-editor/vue2",
+  "name": "@shamimsofte/universal-editor-vue2",
   "version": "1.0.0",
   "type": "module",
   "description": "Vue 2 adapter for Universal Rich Text Editor (Vue 2.6+ & 2.7)",
@@ -24,14 +24,14 @@
     "prosemirror",
     "wysiwyg"
   ],
-  "author": "Enterprise Architecture Team",
+  "author": "shamimSoftE",
   "license": "MIT",
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@universal-editor/core": "^1.0.0"
+    "@shamimsofte/universal-editor-core": "^1.0.0"
   },
   "peerDependencies": {
     "vue": "^2.6.0 || ^2.7.0"

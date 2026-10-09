@@ -12,12 +12,13 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['vue', '@universal-editor/core'],
+      external: ['vue', '@universal-editor/core', '@shamimsofte/universal-editor-core'],
       output: {
         exports: 'named',
         globals: {
           vue: 'Vue',
           '@universal-editor/core': 'UniversalEditor',
+          '@shamimsofte/universal-editor-core': 'UniversalEditor',
         },
       },
     },

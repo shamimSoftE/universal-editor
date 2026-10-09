@@ -1,5 +1,5 @@
 {
-  "name": "@universal-editor/vue3",
+  "name": "@shamimsofte/universal-editor-vue3",
   "version": "1.0.0",
   "type": "module",
   "description": "Vue 3 adapter and components for Universal Editor",
@@ -28,7 +28,7 @@
     "prosemirror",
     "wysiwyg"
   ],
-  "author": "Enterprise Architecture Team",
+  "author": "shamimSoftE",
   "license": "MIT",
   "scripts": {
     "build": "vite build",
@@ -38,7 +38,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@universal-editor/core": "^1.0.0"
+    "@shamimsofte/universal-editor-core": "^1.0.0"
   },
   "devDependencies": {
     "vue": "^3.4.21"

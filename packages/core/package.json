@@ -1,5 +1,5 @@
 {
-  "name": "@universal-editor/core",
+  "name": "@shamimsofte/universal-editor-core",
   "version": "1.0.0",
   "type": "module",
   "description": "Framework-independent core engine for Universal Editor",
@@ -31,7 +31,7 @@
     "wysiwyg",
     "content-editor"
   ],
-  "author": "Enterprise Architecture Team",
+  "author": "shamimSoftE",
   "license": "MIT",
   "scripts": {
     "build": "vite build",
@@ -63,7 +63,7 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
     "@tiptap/suggestion": "^2.2.4",
-    "@universal-editor/utils": "^1.0.0",
+    "@shamimsofte/universal-editor-utils": "^1.0.0",
     "lowlight": "^2.9.0"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "@universal-editor/utils",
+  "name": "@shamimsofte/universal-editor-utils",
   "version": "1.0.0",
   "type": "module",
   "description": "Shared utilities for Universal Editor",
@@ -17,7 +17,7 @@
     "dist"
   ],
   "sideEffects": false,
-  "author": "Enterprise Architecture Team",
+  "author": "shamimSoftE",
   "license": "MIT",
   "scripts": {
     "build": "vite build",
