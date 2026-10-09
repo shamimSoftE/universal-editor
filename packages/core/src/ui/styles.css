@@ -37,6 +37,71 @@
   --ue-font-sans: var(--editor-font-family);
 }
 
+/* Core ProseMirror Content Editable Area */
+.ProseMirror {
+  outline: none;
+  min-height: 250px;
+  padding: 18px 24px;
+  box-sizing: border-box;
+  font-family: var(--editor-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  font-size: var(--editor-font-size, 15px);
+  line-height: 1.65;
+  color: var(--editor-text, #f8fafc);
+  background-color: var(--editor-bg, #0f172a);
+  border-bottom-left-radius: var(--editor-radius, var(--ue-radius, 10px));
+  border-bottom-right-radius: var(--editor-radius, var(--ue-radius, 10px));
+}
+
+.ProseMirror > *:first-child {
+  margin-top: 0 !important;
+}
+
+.ProseMirror > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.ProseMirror p {
+  margin: 0 0 1em 0;
+  line-height: 1.65;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+  margin: 1.25em 0 0.5em 0;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--editor-text, #f8fafc);
+}
+
+.ProseMirror h1 { font-size: 1.85em; }
+.ProseMirror h2 { font-size: 1.5em; }
+.ProseMirror h3 { font-size: 1.25em; }
+
+/* Editor Shell Container Utility */
+.universal-editor-container,
+.universal-editor-wrapper,
+.ue-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--editor-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--editor-radius, var(--ue-radius, 10px));
+  background-color: var(--editor-bg, #0f172a);
+  box-shadow: var(--editor-shadow, 0 10px 25px -5px rgba(0, 0, 0, 0.5));
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.universal-editor-container:focus-within,
+.universal-editor-wrapper:focus-within,
+.ue-container:focus-within {
+  border-color: var(--editor-active-color, #818cf8);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
 /* Toolbar Container */
 .ue-toolbar {
   --ue-btn-color: var(--editor-text, #f8fafc);

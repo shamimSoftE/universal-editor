@@ -113,9 +113,9 @@
       content: '<p>এখানে আপনার লেখা শুরু করুন...</p>',
       placeholder: 'কিছু লিখুন বা কমান্ডের জন্য "/" চাপুন...',
       theme: 'light', // অথবা 'dark', 'sepia'
-      enableToolbar: true,
-      enableBubbleMenu: true,
-      enableSlashCommands: true,
+      toolbar: true, // ফুল টুলবার চালু করার জন্য
+      bubbleMenu: true,
+      slashCommands: true,
       onUpdate: ({ editor }) => {
         // ব্যবহারকারী যখনই কিছু লিখবেন, এই ফাংশনটি কল হবে
         const currentHtml = editor.getHTML();

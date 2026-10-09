@@ -142,11 +142,15 @@ export interface EditorOptions {
   extensions?: (Extension | Mark | Node | any)[];
   placeholder?: string;
   toolbar?: boolean | ToolbarConfig;
+  enableToolbar?: boolean | ToolbarConfig;
   bubbleMenu?: boolean | (ToolbarItemName | string)[];
+  enableBubbleMenu?: boolean | (ToolbarItemName | string)[];
   uploader?: UploaderOptions | UploaderInterface;
   sanitizer?: SanitizerConfig;
   slashCommands?: boolean | SlashCommandsConfig;
+  enableSlashCommands?: boolean | SlashCommandsConfig;
   mentions?: boolean | MentionConfig;
+  enableMentions?: boolean | MentionConfig;
   autosave?: boolean | AutosaveConfig;
   statistics?: boolean | StatisticsConfig;
   wordCounter?: boolean | StatisticsConfig;

@@ -160,7 +160,10 @@ export class UniversalEditor extends EventEmitter implements UniversalEditorInte
       TableCell,
       EmbedExtension,
       SlashCommandsExtension.configure({
-        enabled: this._options.slashCommands !== false,
+        enabled:
+          ((this._options as any).enableSlashCommands !== undefined
+            ? (this._options as any).enableSlashCommands
+            : this._options.slashCommands) !== false,
         commands:
           typeof this._options.slashCommands === 'object' && this._options.slashCommands.commands
             ? this._options.slashCommands.commands
@@ -172,7 +175,10 @@ export class UniversalEditor extends EventEmitter implements UniversalEditorInte
         coreEditor: this,
       }),
       MentionExtension.configure({
-        enabled: this._options.mentions !== false,
+        enabled:
+          ((this._options as any).enableMentions !== undefined
+            ? (this._options as any).enableMentions
+            : this._options.mentions) !== false,
         triggerChar:
           typeof this._options.mentions === 'object' && this._options.mentions.triggerChar
             ? this._options.mentions.triggerChar
@@ -263,14 +269,22 @@ export class UniversalEditor extends EventEmitter implements UniversalEditorInte
     if (this._options.onDestroy) this.on('destroy', this._options.onDestroy);
 
     // Optional Toolbar attachment
-    if (this._options.toolbar && targetElement && targetElement.parentElement) {
-      const config = Array.isArray(this._options.toolbar) ? this._options.toolbar : undefined;
+    const toolbarOption =
+      (this._options as any).enableToolbar !== undefined
+        ? (this._options as any).enableToolbar
+        : this._options.toolbar;
+    if (toolbarOption && targetElement && targetElement.parentElement) {
+      const config = Array.isArray(toolbarOption) ? toolbarOption : undefined;
       this.toolbar = new Toolbar(this, config);
       targetElement.parentElement.insertBefore(this.toolbar.element, targetElement);
     }
 
     // Optional BubbleMenu attachment
-    if (this._options.bubbleMenu !== false && typeof document !== 'undefined') {
+    const bubbleOption =
+      (this._options as any).enableBubbleMenu !== undefined
+        ? (this._options as any).enableBubbleMenu
+        : this._options.bubbleMenu;
+    if (bubbleOption !== false && typeof document !== 'undefined') {
       const linkDialog = this.toolbar?.linkDialog || (this.toolbar = new Toolbar(this)).linkDialog;
       this.bubbleMenu = new BubbleMenu(this, linkDialog);
     }
@@ -299,7 +313,23 @@ export class UniversalEditor extends EventEmitter implements UniversalEditorInte
     if (this._options.customTokens) {
       this._themeManager.setCustomTokens(this._options.customTokens);
     }
+
+    // Apply active theme to toolbar and wrapper if present
+    const activeTheme = this._themeManager.getTheme();
+    if (this.toolbar?.element) {
+      this._themeManager.applyTheme(activeTheme, this.toolbar.element);
+    }
+    if (targetElement?.parentElement && targetElement.parentElement !== document.body) {
+      this._themeManager.applyTheme(activeTheme, targetElement.parentElement);
+    }
+
     this._themeManager.subscribe((theme) => {
+      if (this.toolbar?.element) {
+        this._themeManager.applyTheme(theme, this.toolbar.element);
+      }
+      if (targetElement?.parentElement && targetElement.parentElement !== document.body) {
+        this._themeManager.applyTheme(theme, targetElement.parentElement);
+      }
       this.emit('theme:change', theme);
     });
 
