@@ -21,6 +21,7 @@ defineEmits<{
     :title="title"
     :aria-label="title"
     :aria-pressed="active ? 'true' : 'false'"
+    @mousedown.prevent
     @click="$emit('click', $event)"
     v-html="icon"
   />

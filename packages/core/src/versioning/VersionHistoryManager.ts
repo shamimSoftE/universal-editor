@@ -1,4 +1,4 @@
-import { computeDiff, DiffResult } from '@universal-editor/utils';
+import { computeDiff, DiffResult } from '@shamimsofte/universal-editor-utils';
 
 export interface VersionSnapshot {
   id: number | string;

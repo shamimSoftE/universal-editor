@@ -1,9 +1,9 @@
-import {
+﻿import {
   createEditor,
   UniversalEditor,
   DEFAULT_TOOLBAR,
-} from '@universal-editor/core';
-import type { EditorStatistics, StatisticsConfig } from '@universal-editor/core';
+} from '@shamimsofte/universal-editor-core';
+import type { EditorStatistics, StatisticsConfig } from '@shamimsofte/universal-editor-core';
 
 export const RichTextEditor = {
   name: 'RichTextEditor',

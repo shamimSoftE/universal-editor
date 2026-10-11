@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div v-if="modelValue" class="ue-ai-modal-overlay" @click.self="$emit('update:modelValue', false)">
     <div class="ue-ai-modal" role="dialog" aria-modal="true" aria-labelledby="ai-modal-title">
       <!-- Header -->
@@ -136,7 +136,7 @@ import {
   AIActionType,
   AI_ACTIONS,
   AIProvider,
-} from '@universal-editor/core';
+} from '@shamimsofte/universal-editor-core';
 
 const props = defineProps({
   modelValue: {

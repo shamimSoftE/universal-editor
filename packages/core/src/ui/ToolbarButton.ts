@@ -25,6 +25,10 @@ export class ToolbarButton {
     this.element.setAttribute('aria-label', options.title);
     this.element.innerHTML = options.icon;
 
+    this.element.addEventListener('mousedown', e => {
+      e.preventDefault();
+    });
+
     this.element.addEventListener('click', e => {
       e.preventDefault();
       this.options.action(this.editor);

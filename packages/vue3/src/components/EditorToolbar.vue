@@ -1,11 +1,11 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import type {
   UniversalEditor,
   ToolbarConfig,
   TextAlignment,
-} from '@universal-editor/core';
-import { icons, DEFAULT_TOOLBAR, ToolbarKeyboardNav } from '@universal-editor/core';
+} from '@shamimsofte/universal-editor-core';
+import { icons, DEFAULT_TOOLBAR, ToolbarKeyboardNav } from '@shamimsofte/universal-editor-core';
 import ToolbarButton from './ToolbarButton.vue';
 import ToolbarDropdown from './ToolbarDropdown.vue';
 import ColorPicker from './ColorPicker.vue';
@@ -21,11 +21,21 @@ const props = withDefaults(
 );
 
 const toolbarRef = ref<HTMLElement | null>(null);
+const revision = ref(0);
 let keyboardNav: ToolbarKeyboardNav | null = null;
+
+function handleEditorUpdate() {
+  revision.value++;
+}
 
 onMounted(() => {
   if (toolbarRef.value) {
     keyboardNav = new ToolbarKeyboardNav(toolbarRef.value);
+  }
+  if (props.editor) {
+    props.editor.on('selectionUpdate', handleEditorUpdate);
+    props.editor.on('update', handleEditorUpdate);
+    props.editor.on('transaction', handleEditorUpdate);
   }
 });
 
@@ -33,6 +43,11 @@ onBeforeUnmount(() => {
   if (keyboardNav) {
     keyboardNav.destroy();
     keyboardNav = null;
+  }
+  if (props.editor) {
+    props.editor.off('selectionUpdate', handleEditorUpdate);
+    props.editor.off('update', handleEditorUpdate);
+    props.editor.off('transaction', handleEditorUpdate);
   }
 });
 
@@ -45,6 +60,7 @@ const emit = defineEmits<{
 }>();
 
 const currentHeadingLabel = computed(() => {
+  void revision.value;
   for (let l = 1; l <= 6; l++) {
     if (props.editor.isActive('heading', { level: l })) {
       return `Heading ${l}`;
@@ -54,6 +70,7 @@ const currentHeadingLabel = computed(() => {
 });
 
 const currentAlignLabel = computed(() => {
+  void revision.value;
   if (props.editor.isActive({ textAlign: 'center' })) return 'Center';
   if (props.editor.isActive({ textAlign: 'right' })) return 'Right';
   if (props.editor.isActive({ textAlign: 'justify' })) return 'Justify';
@@ -61,6 +78,7 @@ const currentAlignLabel = computed(() => {
 });
 
 const currentFontFamilyLabel = computed(() => {
+  void revision.value;
   const font = props.editor.tiptap.getAttributes('textStyle').fontFamily;
   if (!font) return 'Font';
   if (font.includes('Kalpurush') || font.includes('Bengali')) return 'বাংলা';
@@ -72,10 +90,12 @@ const currentFontFamilyLabel = computed(() => {
 });
 
 const currentFontSizeLabel = computed(() => {
+  void revision.value;
   return props.editor.tiptap.getAttributes('textStyle').fontSize || 'Size';
 });
 
 const currentLineHeightLabel = computed(() => {
+  void revision.value;
   return (
     props.editor.tiptap.getAttributes('paragraph').lineHeight ||
     props.editor.tiptap.getAttributes('heading').lineHeight ||
@@ -84,6 +104,7 @@ const currentLineHeightLabel = computed(() => {
 });
 
 const currentDirectionLabel = computed(() => {
+  void revision.value;
   const dir =
     props.editor.tiptap.getAttributes('paragraph').dir ||
     props.editor.tiptap.getAttributes('heading').dir;
@@ -205,7 +226,7 @@ function handleDirectionSelect(id: string) {
 
 <template>
   <div ref="toolbarRef" class="ue-toolbar ue-toolbar-scrollable" role="toolbar" aria-label="Rich text formatting">
-    <template v-for="(item, index) in config" :key="index">
+    <template v-for="(item, index) in config" :key="`${index}-${revision}`">
       <!-- Divider -->
       <div v-if="item === '|'" class="ue-toolbar-divider" aria-hidden="true" />
 

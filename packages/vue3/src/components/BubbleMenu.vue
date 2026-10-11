@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import type { UniversalEditor } from '@universal-editor/core';
-import { icons } from '@universal-editor/core';
+import type { UniversalEditor } from '@shamimsofte/universal-editor-core';
+import { icons } from '@shamimsofte/universal-editor-core';
 import ToolbarButton from './ToolbarButton.vue';
 
 const props = defineProps<{

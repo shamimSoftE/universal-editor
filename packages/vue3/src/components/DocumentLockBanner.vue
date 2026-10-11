@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div
     v-if="lockState && lockState.isLocked"
     class="ue-lock-banner"
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import type { DocumentLockState } from '@universal-editor/core';
+import type { DocumentLockState } from '@shamimsofte/universal-editor-core';
 
 defineProps({
   lockState: {

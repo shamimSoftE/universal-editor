@@ -81,6 +81,27 @@
 .ProseMirror h2 { font-size: 1.5em; }
 .ProseMirror h3 { font-size: 1.25em; }
 
+/* Text Alignment Utilities */
+.ProseMirror [style*="text-align: left"],
+.ProseMirror .has-text-align-left {
+  text-align: left !important;
+}
+
+.ProseMirror [style*="text-align: center"],
+.ProseMirror .has-text-align-center {
+  text-align: center !important;
+}
+
+.ProseMirror [style*="text-align: right"],
+.ProseMirror .has-text-align-right {
+  text-align: right !important;
+}
+
+.ProseMirror [style*="text-align: justify"],
+.ProseMirror .has-text-align-justify {
+  text-align: justify !important;
+}
+
 /* Editor Shell Container Utility */
 .universal-editor-container,
 .universal-editor-wrapper,
@@ -292,7 +313,8 @@
   transition: opacity 0.2s ease;
 }
 
-.ue-dialog-overlay.is-open {
+.ue-dialog-overlay.is-open,
+.ue-dialog-overlay.active {
   opacity: 1;
   pointer-events: auto;
 }
@@ -311,7 +333,8 @@
   font-family: var(--ue-font-sans);
 }
 
-.ue-dialog-overlay.is-open .ue-dialog {
+.ue-dialog-overlay.is-open .ue-dialog,
+.ue-dialog-overlay.active .ue-dialog {
   transform: scale(1);
 }
 
@@ -800,16 +823,19 @@ sup {
 }
 
 /* Editor Table Elements */
+.ProseMirror table,
 .ProseMirror table.ue-table,
 .ue-table {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
-  margin: 0;
+  margin: 1em 0;
   overflow: hidden;
   font-size: 14px;
 }
 
+.ProseMirror table td,
+.ProseMirror table th,
 .ProseMirror table.ue-table td,
 .ProseMirror table.ue-table th,
 .ue-table td,
@@ -819,21 +845,24 @@ sup {
   vertical-align: top;
   box-sizing: border-box;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--editor-border, var(--ue-toolbar-border, rgba(255, 255, 255, 0.15)));
+  color: var(--editor-text, #f8fafc);
 }
 
+.ProseMirror table th,
 .ProseMirror table.ue-table th,
 .ue-table th {
   font-weight: 600;
   text-align: left;
-  background: rgba(255, 255, 255, 0.05);
-  color: #f1f5f9;
+  background: var(--editor-button-hover, rgba(255, 255, 255, 0.06));
+  color: var(--editor-text, #f1f5f9);
 }
 
+.ProseMirror table td,
 .ProseMirror table.ue-table td,
 .ue-table td {
   background: transparent;
-  color: #e2e8f0;
+  color: var(--editor-text, #e2e8f0);
 }
 
 /* Selected Cells (Multi-cell drag selection) */

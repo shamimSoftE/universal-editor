@@ -1,6 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
-import { icons } from '@universal-editor/core';
+import { icons } from '@shamimsofte/universal-editor-core';
 
 const props = defineProps<{
   modelValue: boolean;

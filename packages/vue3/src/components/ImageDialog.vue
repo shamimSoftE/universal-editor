@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref } from 'vue';
-import { icons } from '@universal-editor/core';
-import type { UniversalEditor, ImageAttributes } from '@universal-editor/core';
+import { icons } from '@shamimsofte/universal-editor-core';
+import type { UniversalEditor, ImageAttributes } from '@shamimsofte/universal-editor-core';
 
 const props = defineProps<{
   modelValue: boolean;

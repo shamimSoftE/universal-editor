@@ -1,6 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import { icons } from '@universal-editor/core';
+import { icons } from '@shamimsofte/universal-editor-core';
 
 export interface DropdownItem {
   id: string;
@@ -61,6 +61,7 @@ onUnmounted(() => {
       :aria-label="title"
       aria-haspopup="true"
       :aria-expanded="isOpen ? 'true' : 'false'"
+      @mousedown.prevent
       @click.stop="toggle"
     >
       <span>{{ currentLabel }}</span>
@@ -75,6 +76,7 @@ onUnmounted(() => {
         class="ue-dropdown-item"
         :class="{ 'is-active': item.active }"
         role="menuitem"
+        @mousedown.prevent
         @click.stop="selectItem(item.id)"
       >
         <span v-if="item.icon" v-html="item.icon" />

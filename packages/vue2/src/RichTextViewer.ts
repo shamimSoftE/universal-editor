@@ -1,4 +1,4 @@
-import { renderViewerHTML } from '@universal-editor/core';
+﻿import { renderViewerHTML } from '@shamimsofte/universal-editor-core';
 
 export const RichTextViewer = {
   name: 'RichTextViewer',

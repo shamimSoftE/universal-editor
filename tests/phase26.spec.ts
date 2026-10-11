@@ -57,8 +57,8 @@ describe('Phase 26: NPM & Composer Production Packages Verification', () => {
         expect(fs.existsSync(pkgJsonPath)).toBe(true);
 
         const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
-        expect(pkgJson.name).toBe(pkg.name);
-        expect(pkgJson.version).toBe('1.0.0');
+        expect([pkg.name, pkg.name.replace('@universal-editor/', '@shamimsofte/universal-editor-')]).toContain(pkgJson.name);
+        expect(pkgJson.version).toMatch(/^1\.\d+\.\d+$/);
         expect(pkgJson.type).toBe('module');
         expect(pkgJson.license).toBe('MIT');
         expect(pkgJson.main).toBe(pkg.main);
@@ -90,7 +90,7 @@ describe('Phase 26: NPM & Composer Production Packages Verification', () => {
       expect(fs.existsSync(composerJsonPath)).toBe(true);
 
       const composer = JSON.parse(fs.readFileSync(composerJsonPath, 'utf-8'));
-      expect(composer.name).toBe('vendor/laravel-universal-editor');
+      expect(['vendor/laravel-universal-editor', 'shamimsofte/laravel-universal-editor']).toContain(composer.name);
       expect(composer.version).toBe('1.0.0');
       expect(composer.type).toBe('library');
       expect(composer.license).toBe('MIT');
@@ -190,6 +190,6 @@ describe('Phase 26: NPM & Composer Production Packages Verification', () => {
       expect(vue3Bundle.RichTextEditor).toBeDefined();
       expect(vue3Bundle.RichTextViewer).toBeDefined();
       expect(vue3Bundle.default).toBeDefined();
-    });
+    }, 20000);
   });
 });

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="ue-collab-bar">
     <!-- Left: Collaborator Avatars & Presence -->
     <div class="ue-collab-left">
@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import type { UserPresence, DocumentLockState } from '@universal-editor/core';
+import type { UserPresence, DocumentLockState } from '@shamimsofte/universal-editor-core';
 
 defineProps({
   presences: {

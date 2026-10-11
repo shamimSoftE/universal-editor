@@ -151,11 +151,13 @@ export class EmbedDialog {
     this.previewBadge.style.display = 'none';
     this.errorMsg.style.display = 'none';
 
+    this.overlay.classList.add('is-open');
     this.overlay.classList.add('active');
     setTimeout(() => this.urlInput.focus(), 60);
   }
 
   public close(): void {
+    this.overlay.classList.remove('is-open');
     this.overlay.classList.remove('active');
     this.editor.focus();
   }

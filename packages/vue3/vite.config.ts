@@ -28,12 +28,24 @@ export default defineConfig({
     preserveSymlinks: true,
     alias: [
       {
+        find: '@shamimsofte/universal-editor-core/styles.css',
+        replacement: path.resolve(__dirname, '../core/src/ui/styles.css'),
+      },
+      {
         find: '@universal-editor/core/styles.css',
         replacement: path.resolve(__dirname, '../core/src/ui/styles.css'),
       },
       {
+        find: '@shamimsofte/universal-editor-core',
+        replacement: path.resolve(__dirname, '../core/src/index.ts'),
+      },
+      {
         find: '@universal-editor/core',
         replacement: path.resolve(__dirname, '../core/src/index.ts'),
+      },
+      {
+        find: '@shamimsofte/universal-editor-utils',
+        replacement: path.resolve(__dirname, '../utils/src/index.ts'),
       },
       {
         find: '@universal-editor/utils',

@@ -152,7 +152,10 @@ export class TableDialog {
     });
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+      if (
+        e.key === 'Escape' &&
+        (this.overlay.classList.contains('active') || this.overlay.classList.contains('is-open'))
+      ) {
         this.close();
       }
     });
@@ -166,11 +169,13 @@ export class TableDialog {
     this.headerCheckbox.checked = true;
     this.setHighlight(3, 3);
 
+    this.overlay.classList.add('is-open');
     this.overlay.classList.add('active');
     setTimeout(() => this.rowsInput.focus(), 50);
   }
 
   public close(): void {
+    this.overlay.classList.remove('is-open');
     this.overlay.classList.remove('active');
     this.editor.focus();
   }

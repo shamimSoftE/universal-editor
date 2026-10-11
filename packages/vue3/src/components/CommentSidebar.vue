@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <aside class="ue-comment-sidebar">
     <!-- Header -->
     <div class="ue-comment-header">
@@ -168,7 +168,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { PropType } from 'vue';
-import type { CommentItem } from '@universal-editor/core';
+import type { CommentItem } from '@shamimsofte/universal-editor-core';
 
 const props = defineProps({
   comments: {

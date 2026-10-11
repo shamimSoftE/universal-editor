@@ -10,12 +10,13 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['@tiptap/core', '@universal-editor/core'],
+      external: ['@tiptap/core', '@universal-editor/core', '@shamimsofte/universal-editor-core'],
       output: {
         exports: 'named',
         globals: {
           '@tiptap/core': 'TiptapCore',
           '@universal-editor/core': 'UniversalEditor',
+          '@shamimsofte/universal-editor-core': 'UniversalEditor',
         },
       },
     },
@@ -25,8 +26,16 @@ export default defineConfig({
     preserveSymlinks: true,
     alias: [
       {
+        find: '@shamimsofte/universal-editor-core',
+        replacement: path.resolve(__dirname, '../core/src/index.ts'),
+      },
+      {
         find: '@universal-editor/core',
         replacement: path.resolve(__dirname, '../core/src/index.ts'),
+      },
+      {
+        find: '@shamimsofte/universal-editor-utils',
+        replacement: path.resolve(__dirname, '../utils/src/index.ts'),
       },
       {
         find: '@universal-editor/utils',

@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, computed } from 'vue';
-import { icons } from '@universal-editor/core';
-import type { UniversalEditor, InsertTableOptions } from '@universal-editor/core';
+import { icons } from '@shamimsofte/universal-editor-core';
+import type { UniversalEditor, InsertTableOptions } from '@shamimsofte/universal-editor-core';
 
 const props = defineProps<{
   modelValue: boolean;

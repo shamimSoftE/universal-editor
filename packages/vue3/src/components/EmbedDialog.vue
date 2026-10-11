@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref } from 'vue';
-import { icons, detectEmbedProvider } from '@universal-editor/core';
-import type { UniversalEditor, EmbedProvider } from '@universal-editor/core';
+import { icons, detectEmbedProvider } from '@shamimsofte/universal-editor-core';
+import type { UniversalEditor, EmbedProvider } from '@shamimsofte/universal-editor-core';
 
 const props = defineProps<{
   modelValue: boolean;

@@ -1,6 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref } from 'vue';
-import { icons } from '@universal-editor/core';
+import { icons } from '@shamimsofte/universal-editor-core';
 
 const props = withDefaults(
   defineProps<{
@@ -52,6 +52,7 @@ function clearColor() {
       class="ue-toolbar-btn ue-color-btn"
       :class="{ 'is-active': isActive }"
       :title="title"
+      @mousedown.prevent
       @click.stop="toggle"
     >
       <span class="ue-btn-icon" v-html="name === 'highlight' ? icons.highlight : icons.color" />
@@ -71,6 +72,7 @@ function clearColor() {
           class="ue-color-swatch"
           :style="{ backgroundColor: c }"
           :title="c"
+          @mousedown.prevent
           @click="selectColor(c)"
         />
       </div>
@@ -85,7 +87,7 @@ function clearColor() {
             @change="selectColor(customColor)"
           />
         </label>
-        <button type="button" class="ue-color-clear-btn" @click="clearColor">
+        <button type="button" class="ue-color-clear-btn" @mousedown.prevent @click="clearColor">
           Reset
         </button>
       </div>

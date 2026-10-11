@@ -41,6 +41,7 @@ export class ThemeManager {
   protected persistKey?: string;
   protected listeners: Set<(theme: EditorTheme) => void> = new Set();
   protected customOverrides: Partial<EditorThemeTokens> = {};
+  private isNotifying = false;
 
   constructor(options: ThemeManagerOptions = {}) {
     // Register default presets
@@ -73,7 +74,7 @@ export class ThemeManager {
 
     this.currentTheme = this.themes.get(initialThemeId) || darkTheme;
     if (this.targetElement) {
-      this.applyTheme(this.currentTheme, this.targetElement);
+      this.applyTheme(this.currentTheme, this.targetElement, false);
     }
   }
 
@@ -83,7 +84,7 @@ export class ThemeManager {
   public setTargetElement(element: HTMLElement | null): void {
     this.targetElement = element;
     if (element) {
-      this.applyTheme(this.currentTheme, element);
+      this.applyTheme(this.currentTheme, element, false);
     }
   }
 
@@ -124,7 +125,8 @@ export class ThemeManager {
    */
   public applyTheme(
     themeOrId: string | EditorTheme,
-    target?: HTMLElement | null
+    target?: HTMLElement | null,
+    notify?: boolean
   ): EditorTheme {
     let resolvedTheme: EditorTheme;
 
@@ -167,7 +169,16 @@ export class ThemeManager {
       }
     }
 
-    this.notifyListeners(resolvedTheme);
+    const shouldNotify =
+      notify !== undefined ? notify : target === undefined || target === this.targetElement;
+    if (shouldNotify && !this.isNotifying) {
+      this.isNotifying = true;
+      try {
+        this.notifyListeners(resolvedTheme);
+      } finally {
+        this.isNotifying = false;
+      }
+    }
     return resolvedTheme;
   }
 

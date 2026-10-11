@@ -64,6 +64,10 @@ export class ColorPicker {
     this.element.appendChild(this.button);
     this.element.appendChild(this.menu);
 
+    this.button.addEventListener('mousedown', e => {
+      e.preventDefault();
+    });
+
     this.button.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
@@ -92,6 +96,10 @@ export class ColorPicker {
       swatch.className = 'ue-color-swatch';
       swatch.style.backgroundColor = color;
       swatch.title = color;
+
+      swatch.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
 
       swatch.addEventListener('click', e => {
         e.preventDefault();
@@ -131,6 +139,10 @@ export class ColorPicker {
     clearBtn.type = 'button';
     clearBtn.className = 'ue-color-clear-btn';
     clearBtn.textContent = 'Reset';
+
+    clearBtn.addEventListener('mousedown', e => {
+      e.preventDefault();
+    });
 
     clearBtn.addEventListener('click', e => {
       e.preventDefault();

@@ -11,6 +11,10 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) return 'styles.css';
+          return assetInfo.name || '[name].[ext]';
+        },
         globals: {},
       },
     },
@@ -19,6 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@universal-editor/utils': path.resolve(__dirname, '../utils/src/index.ts'),
+      '@shamimsofte/universal-editor-utils': path.resolve(__dirname, '../utils/src/index.ts'),
     },
   },
 });

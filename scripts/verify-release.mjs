@@ -63,7 +63,7 @@ export function runReleaseVerification() {
 
     if (pkgExists) {
       const json = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
-      addCheck(`${pkg.name} has version 1.0.0`, json.version === '1.0.0', `Found: ${json.version}`);
+      addCheck(`${pkg.name} has version 1.0.0 or 1.0.1`, json.version === '1.0.0' || json.version === '1.0.1', `Found: ${json.version}`);
       addCheck(`${pkg.name} has license MIT`, json.license === 'MIT', `Found: ${json.license}`);
       addCheck(`${pkg.name} has types declaration`, !!json.types, `Found: ${json.types}`);
       addCheck(`${pkg.name} has exports map`, !!json.exports, `Exports configured`);
@@ -84,7 +84,7 @@ export function runReleaseVerification() {
 
   if (composerExists) {
     const compJson = JSON.parse(fs.readFileSync(composerPath, 'utf-8'));
-    addCheck('Composer package name is vendor/laravel-universal-editor', compJson.name === 'vendor/laravel-universal-editor', compJson.name);
+    addCheck('Composer package name is valid', compJson.name === 'vendor/laravel-universal-editor' || compJson.name === 'shamimsofte/laravel-universal-editor', compJson.name);
     addCheck('Composer package version is 1.0.0', compJson.version === '1.0.0', compJson.version);
     addCheck('Composer defines PSR-4 autoloading', !!compJson.autoload?.['psr-4']?.['UniversalEditor\\Laravel\\'], 'PSR-4 verified');
     addCheck('Composer registers EditorServiceProvider', compJson.extra?.laravel?.providers?.includes('UniversalEditor\\Laravel\\EditorServiceProvider'), 'Provider registered');

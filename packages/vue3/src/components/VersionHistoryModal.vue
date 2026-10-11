@@ -1,6 +1,6 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import type { VersionSnapshot } from '@universal-editor/core';
+import type { VersionSnapshot } from '@shamimsofte/universal-editor-core';
 import { computeDiff, type DiffResult } from '@universal-editor/utils';
 
 const props = defineProps<{

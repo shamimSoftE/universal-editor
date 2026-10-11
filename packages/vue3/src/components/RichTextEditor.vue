@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, shallowRef, markRaw, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import {
   createEditor,
@@ -27,8 +27,8 @@ import {
   MobileConfig,
   Announcer,
   MobileManager,
-} from '@universal-editor/core';
-import '@universal-editor/core/styles.css';
+} from '@shamimsofte/universal-editor-core';
+import '@shamimsofte/universal-editor-core/styles.css';
 
 import EditorToolbar from './EditorToolbar.vue';
 import ToolbarButton from './ToolbarButton.vue';
@@ -309,6 +309,7 @@ onMounted(() => {
     updateStatistics(instance);
     emit('ready', { editor: instance });
   } catch (err) {
+    console.error('RichTextEditor init error:', err);
     emit('error', err);
   }
 });

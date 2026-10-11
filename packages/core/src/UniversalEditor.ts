@@ -6,7 +6,7 @@ import TaskItem from '@tiptap/extension-task-item';
 import TextAlign from '@tiptap/extension-text-align';
 import Link from '@tiptap/extension-link';
 
-import { EventEmitter } from '@universal-editor/utils';
+import { EventEmitter } from '@shamimsofte/universal-editor-utils';
 import type {
   Content,
   EditorOptions,
@@ -123,7 +123,7 @@ export class UniversalEditor extends EventEmitter implements UniversalEditorInte
         nested: true,
       }),
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
+        types: ['heading', 'paragraph', 'blockquote', 'tableCell', 'tableHeader', 'listItem', 'taskItem'],
       }),
       Link.configure({
         openOnClick: false,

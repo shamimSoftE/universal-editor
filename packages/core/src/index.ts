@@ -39,10 +39,11 @@ export * from './accessibility';
 export * from './mobile';
 export * from './performance/LazyLoader';
 export { Extension, Mark, Node } from '@tiptap/core';
-export { EventEmitter } from '@universal-editor/utils';
+export { EventEmitter } from '@shamimsofte/universal-editor-utils';
 
 import { UniversalEditor } from './UniversalEditor';
 import { createEditor } from './createEditor';
+import './ui/styles.css';
 
 // Browser global auto-registration for vanilla JS CDN/script tag usage
 if (typeof window !== 'undefined') {

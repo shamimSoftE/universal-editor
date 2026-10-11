@@ -12,13 +12,14 @@
       "import": "./dist/universal-editor.es.js",
       "require": "./dist/universal-editor.umd.js"
     },
-    "./styles.css": "./src/ui/styles.css",
+    "./styles.css": "./dist/styles.css",
+    "./dist/styles.css": "./dist/styles.css",
     "./dist/esm": "./dist/universal-editor.es.js",
     "./dist/umd": "./dist/universal-editor.umd.js"
   },
   "files": [
     "dist",
-    "src/ui/styles.css",
+    "src",
     "README.md"
   ],
   "repository": {

@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
-import type { EditorTheme, ThemeManager, UniversalEditor } from '@universal-editor/core';
-import { DEFAULT_THEMES } from '@universal-editor/core';
+import type { EditorTheme, ThemeManager, UniversalEditor } from '@shamimsofte/universal-editor-core';
+import { DEFAULT_THEMES } from '@shamimsofte/universal-editor-core';
 
 export interface ThemeSwitcherProps {
   modelValue?: string;

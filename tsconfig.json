@@ -23,10 +23,17 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
+      "@shamimsofte/universal-editor-core": ["packages/core/src/index.ts"],
+      "@shamimsofte/universal-editor-core/*": ["packages/core/src/*"],
       "@universal-editor/core": ["packages/core/src/index.ts"],
+      "@universal-editor/core/*": ["packages/core/src/*"],
+      "@shamimsofte/universal-editor-utils": ["packages/utils/src/index.ts"],
       "@universal-editor/utils": ["packages/utils/src/index.ts"],
+      "@shamimsofte/universal-editor-extensions": ["packages/extensions/src/index.ts"],
       "@universal-editor/extensions": ["packages/extensions/src/index.ts"],
+      "@shamimsofte/universal-editor-vue3": ["packages/vue3/src/index.ts"],
       "@universal-editor/vue3": ["packages/vue3/src/index.ts"],
+      "@shamimsofte/universal-editor-vue2": ["packages/vue2/src/index.ts"],
       "@universal-editor/vue2": ["packages/vue2/src/index.ts"]
     }
   },

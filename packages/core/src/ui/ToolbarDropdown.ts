@@ -67,6 +67,10 @@ export class ToolbarDropdown {
         itemBtn.textContent = item.label;
       }
 
+      itemBtn.addEventListener('mousedown', e => {
+        e.preventDefault();
+      });
+
       itemBtn.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
@@ -81,6 +85,10 @@ export class ToolbarDropdown {
 
     this.element.appendChild(this.button);
     this.element.appendChild(this.menu);
+
+    this.button.addEventListener('mousedown', e => {
+      e.preventDefault();
+    });
 
     this.button.addEventListener('click', e => {
       e.preventDefault();

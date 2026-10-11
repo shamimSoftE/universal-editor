@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   UniversalEditor,
   EditorStatistics,
   StatisticsConfig,
@@ -8,7 +8,7 @@ import type {
   SlashCommandsConfig,
   MentionConfig,
   SanitizerConfig,
-} from '@universal-editor/core';
+} from '@shamimsofte/universal-editor-core';
 
 export interface Vue2EditorProps {
   value?: string | Record<string, any>;

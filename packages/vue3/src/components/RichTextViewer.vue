@@ -1,7 +1,7 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
-import { renderViewerHTML } from '@universal-editor/core';
-import type { SanitizerConfig } from '@universal-editor/core';
+import { renderViewerHTML } from '@shamimsofte/universal-editor-core';
+import type { SanitizerConfig } from '@shamimsofte/universal-editor-core';
 
 const props = withDefaults(
   defineProps<{
